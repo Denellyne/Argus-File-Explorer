@@ -1,0 +1,72 @@
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+*.smod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+.vs/fileExplorer/FileContentIndex/153e1615-c519-42e9-8a22-a30f09e57b6a.vsidx
+.vs/fileExplorer/FileContentIndex/57ffd712-4c8b-4e29-b38d-5f4fec9ac816.vsidx
+.vs/fileExplorer/FileContentIndex/7624cb28-e80d-4794-b5e8-7c78f6988b21.vsidx
+.vs/fileExplorer/FileContentIndex/86233027-41ae-40eb-98c8-8a55e489a1e8.vsidx
+.vs/fileExplorer/FileContentIndex/d2f91559-e431-4480-a103-b142c1025b85.vsidx
+.vs/fileExplorer/v17/.suo
+.vs/fileExplorer/v17/Browse.VC.db
+.vs/fileExplorer/v17/Browse.VC.db-shm
+.vs/fileExplorer/v17/Browse.VC.db-wal
+.vs/fileExplorer/v17/Browse.VC.opendb
+.vs/fileExplorer/v17/ipch/AutoPCH/1b755ca734b3c713/METHODS&FUNCTIONS.ipch
+.vs/fileExplorer/v17/ipch/AutoPCH/238226e10f2e2e46/METHODS&FUNCTIONS.ipch
+.vs/fileExplorer/v17/ipch/AutoPCH/27eb9c7365dee546/FUNCTIONS.ipch
+.vs/fileExplorer/v17/ipch/AutoPCH/3191c35bceb960ee/DRIVE.ipch
+.vs/fileExplorer/v17/ipch/AutoPCH/36c3bc3aa9de0999/MAIN.ipch
+.vs/fileExplorer/v17/ipch/AutoPCH/47d8997693fcfb/METHODS&FUNCTIONS.ipch
+.vs/fileExplorer/v17/ipch/AutoPCH/6f62b4d33c78dca3/MAIN.ipch
+.vs/fileExplorer/v17/ipch/AutoPCH/8c6436f7d59ae0d8/DIRECTORY.ipch
+.vs/fileExplorer/v17/ipch/AutoPCH/a097b1bea274f449/ADRIVE.ipch
+.vs/fileExplorer/v17/ipch/AutoPCH/f278d44f336e42e1/DIRECTORY.ipch
+.vs/fileExplorer/v17/ipch/AutoPCH/fbe4c90c1dbeb022/FILE.ipch
+x64/Release/fileExplorer.exe.recipe
+x64/Release/fileExplorer.iobj
+x64/Release/fileExplorer.ipdb
+x64/Release/fileExplorer.pdb
+x64/Release/fileExplorer.res
+x64/Release/fileExplorer.tlog/CL.command.1.tlog
+x64/Release/fileExplorer.tlog/Cl.items.tlog
+x64/Release/fileExplorer.tlog/CL.read.1.tlog
+x64/Release/fileExplorer.tlog/CL.write.1.tlog
+x64/Release/fileExplorer.tlog/fileExplorer.lastbuildstate
+x64/Release/fileExplorer.tlog/link.command.1.tlog
+x64/Release/fileExplorer.tlog/link.read.1.tlog
+x64/Release/fileExplorer.tlog/link.write.1.tlog
+x64/Release/fileExplorer.tlog/link.write.2u.tlog
+x64/Release/fileExplorer.tlog/rc.command.1.tlog
+x64/Release/fileExplorer.tlog/rc.read.1.tlog
+x64/Release/fileExplorer.tlog/rc.write.1.tlog
+x64/Release/fileExplorer.vcxproj.FileListAbsolute.txt
+x64/Release/vc143.pdb
