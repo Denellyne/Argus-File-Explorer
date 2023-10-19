@@ -1,5 +1,10 @@
 #include "Functions.h"
 #include "File.h"
+
+File::File()
+{
+}
+
 void File::newPath(std::string newPath) {
     fs::rename(filePath, newPath);
     filePath = newPath;
@@ -8,9 +13,6 @@ void File::newPath(std::string newPath) {
 
 void File::getSize() {
     fileSize = fs::file_size(filePath);
-    if (fileSize < 1048576) {
-    }
-    else {
-        fileSize = fileSize * toMegabyte;
-    }
+    fileSize = (fileSize > 1048576) ?  fileSize / 1048576 : fileSize;
+
 }

@@ -1,10 +1,10 @@
 #pragma once
 
 #include "Drive.h"
+#include "File.h"
 #include "Directory.h"
 #include <filesystem>
 #include <vector>
 
 
-void searchPath(int& i);
-void createPathVector(std::vector<Directory>& directories);
+void setDirectoriesFiles(std::vector<Directory>& directories, std::vector<File>& files);
