@@ -5,8 +5,8 @@ class Directory :
     public Drive
 {
 public:
-    Directory();
+    Directory(std::string dirEntry);
     void newPath(std::string newPath);
-    //Directory();
+    void copyDirectory(std::string newPath);
 };
 

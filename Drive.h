@@ -6,9 +6,7 @@
 namespace fs = std::filesystem;
 class Drive
 {
-public:
-
-    
+public:   
     std::string filePath;
 private:
     const std::filesystem::space_info driveBytes;

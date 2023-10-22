@@ -1,8 +1,10 @@
 #include "Functions.h"
 #include "File.h"
 
-File::File()
+File::File(std::string dirEntry)
 {
+    filePath = dirEntry;
+    getSize();
 }
 
 void File::newPath(std::string newPath) {
@@ -11,8 +13,12 @@ void File::newPath(std::string newPath) {
     getSize();
 }
 
-void File::getSize() {
+void File::getSize() { // in kBs
     fileSize = fs::file_size(filePath);
-    fileSize = (fileSize > 1048576) ?  fileSize / 1048576 : fileSize;
-
+    fileSize *= 0.0009765625;
 }
+
+void File::copyFile(std::string newPath) {
+    fs::copy(filePath, newPath,fs::copy_options::update_existing);
+}
+

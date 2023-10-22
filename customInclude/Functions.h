@@ -5,6 +5,7 @@
 #include "Directory.h"
 #include <filesystem>
 #include <vector>
+#include <iostream>
 
-
-void setDirectoriesFiles(std::vector<Directory>& directories, std::vector<File>& files);
+void setDirectoriesFiles(std::string Path,std::vector<Directory>& directories, std::vector<File>& files);
+void function1Test(std::vector<Directory>& directories, std::vector<File>& files);

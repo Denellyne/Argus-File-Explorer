@@ -2,25 +2,34 @@
 #include "Drive.h"
 #include "File.h"
 #include "Directory.h"
+#include <iostream>
 #include <filesystem>
 #include <vector>
 
 
 namespace fs = std::filesystem;
 
-void setDirectoriesFiles(std::vector<Directory>& directories, std::vector<File>& files) {
-    int i = 0, j = 0;
-    
-    for (const auto& dirEntry : fs::directory_iterator("C:\\", fs::directory_options::skip_permission_denied)){
+
+void setDirectoriesFiles(std::string Path,std::vector<Directory>& directories, std::vector<File>& files) {
+    files.clear();
+    directories.clear();
+    for (const auto& dirEntry : fs::directory_iterator(Path, fs::directory_options::skip_permission_denied)){
         if (dirEntry.is_directory()) {
-            directories.push_back(Directory());
-            directories[i].filePath = dirEntry.path().generic_string();
-            i++;
+            directories.push_back(Directory(dirEntry.path().generic_string()));
         }
-        if (dirEntry.is_regular_file()) {
-            files.push_back(File());
-            files[j].filePath = dirEntry.path().generic_string();
-            j++;
+        else{
+            files.push_back(File(dirEntry.path().generic_string()));
         }
+    }
+}
+
+void function1Test(std::vector<Directory>& directories, std::vector<File>& files) {
+    std::cout << "Directories:\n";
+    for (int i = 0;i < directories.size(); i++) {
+        std::cout << directories[i].filePath << '\n';
+    }
+    std::cout << "Files:\n";
+    for (int i = 0;i < files.size(); i++) {
+        std::cout << files[i].filePath << std::endl;
     }
 }
