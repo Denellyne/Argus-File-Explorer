@@ -45,9 +45,4 @@
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="fileExplorer.rc">
-      <Filter>Arquivos de Recurso</Filter>
-    </ResourceCompile>
-  </ItemGroup>
 </Project>

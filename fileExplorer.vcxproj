@@ -169,9 +169,6 @@
     <ClInclude Include="Drive.h" />
     <ClInclude Include="File.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="fileExplorer.rc" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
