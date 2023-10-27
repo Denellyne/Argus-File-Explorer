@@ -1,14 +1,19 @@
 #include <iostream>
 #include <vector>
+#include <stack>
 #include "Functions.h"
-#include <chrono>
-#include <iostream>
 
 int main() {
-    std::vector<Directory> directories(0,Directory("C:\\")); // So it doesn't crash
-    std::vector<File> files(0,File("C:\\Windows\\regedit.exe")); // So it doesn't crash
-    setDirectoriesFiles("C:\\",directories, files);
-    function1Test(directories, files);
-    std::cout << files[2].fileSize << "kB\n";
+    std::stack<std::string> dirStack;
+    std::vector<Directory> directories(0, Directory("C:\\"));
+    std::vector<File> files(0,File("fileExplorer.exe"));
+    searchPath("C:\\", directories, files, dirStack);
+    bool a = true;
+    while (a) {   
+        std::string newPath;
+        std::getline(std::cin, newPath);
+        searchPath(newPath, directories, files, dirStack);
+        function1Test(directories, files);
+    }
     return 0;
 }

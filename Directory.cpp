@@ -5,6 +5,7 @@
 Directory::Directory(std::string dirEntry)
 {
     filePath = dirEntry;
+
 }
 
 void Directory::newPath(std::string newPath) {   // Renames // Changes the directory of the file
