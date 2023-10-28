@@ -81,3 +81,4 @@ x64/Release/fileExplorer.Build.CppClean.log
 .vs/fileExplorer/v17/ipch/AutoPCH/12b696af39bd7e40/BENCHMARK.ipch
 .vs/fileExplorer/v17/ipch/AutoPCH/4f99e28bc89c8c33/EXE_COMMON.ipch
 x64/Release/removeBloat.bat
+x64/Release/fileExplorer.log

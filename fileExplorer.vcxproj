@@ -122,14 +122,14 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <Optimization>MaxSpeed</Optimization>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer;C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer\customInclude;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>\customInclude;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer;C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer\customInclude;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>\customInclude;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -143,7 +143,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer;C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer\customInclude;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\customInclude;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
@@ -152,22 +152,22 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer;C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer\customInclude;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\customInclude;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="customInclude\Directory.cpp" />
+    <ClCompile Include="customInclude\Drive.cpp" />
+    <ClCompile Include="customInclude\File.cpp" />
     <ClCompile Include="customInclude\Functions.cpp" />
-    <ClCompile Include="Directory.cpp" />
-    <ClCompile Include="Drive.cpp" />
-    <ClCompile Include="File.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="customInclude\Directory.h" />
+    <ClInclude Include="customInclude\Drive.h" />
+    <ClInclude Include="customInclude\File.h" />
     <ClInclude Include="customInclude\Functions.h" />
-    <ClInclude Include="Directory.h" />
-    <ClInclude Include="Drive.h" />
-    <ClInclude Include="File.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
