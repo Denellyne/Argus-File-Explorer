@@ -13,7 +13,7 @@ int main() {
         std::string newPath;
         std::getline(std::cin, newPath);
         searchPath(newPath, directories, files, dirStack);
-        function1Test(directories, files);
+        debugPrint(directories, files);
     }
     return 0;
 }
