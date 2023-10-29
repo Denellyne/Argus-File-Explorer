@@ -5,6 +5,18 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fileExplorer", "fileExplorer.vcxproj", "{CC88DB48-E553-40C4-AD69-2AF1AA21F7E4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomInclude", "CustomInclude", "{75C073CF-7B09-46DD-B198-25B2E9D56FFD}"
+	ProjectSection(SolutionItems) = preProject
+		customInclude\Directory.cpp = customInclude\Directory.cpp
+		customInclude\Directory.h = customInclude\Directory.h
+		customInclude\Drive.cpp = customInclude\Drive.cpp
+		customInclude\Drive.h = customInclude\Drive.h
+		customInclude\File.cpp = customInclude\File.cpp
+		customInclude\File.h = customInclude\File.h
+		customInclude\Functions.cpp = customInclude\Functions.cpp
+		customInclude\Functions.h = customInclude\Functions.h
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
