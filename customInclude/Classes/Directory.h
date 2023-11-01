@@ -1,10 +1,10 @@
 #pragma once
-#include "Drive.h"
+
 #include "Functions.h"
-class Directory :
-    public Drive
-{
+#include <iostream>
+class Directory{
 public:
+    std::string filePath;
     Directory(std::string dirEntry);
     void newPath(std::string newPath);
     void copyDirectory(std::string newPath);

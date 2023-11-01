@@ -18,30 +18,30 @@
     <ClCompile Include="main.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="customInclude\Directory.cpp">
+    <ClCompile Include="customInclude\Main\app.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="customInclude\Drive.cpp">
+    <ClCompile Include="customInclude\Functionality\Functions.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="customInclude\File.cpp">
+    <ClCompile Include="customInclude\Classes\Directory.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
-    <ClCompile Include="customInclude\Functions.cpp">
+    <ClCompile Include="customInclude\Classes\File.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="customInclude\Functions.h">
+    <ClInclude Include="customInclude\Main\app.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="customInclude\Directory.h">
+    <ClInclude Include="customInclude\Functionality\Functions.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="customInclude\Drive.h">
+    <ClInclude Include="customInclude\Classes\Directory.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
-    <ClInclude Include="customInclude\File.h">
+    <ClInclude Include="customInclude\Classes\File.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
   </ItemGroup>

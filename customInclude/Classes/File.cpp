@@ -1,5 +1,7 @@
 #include "Functions.h"
 #include "File.h"
+#include <iostream>
+namespace fs = std::filesystem;
 
 File::File(std::string dirEntry)
 {
@@ -10,7 +12,6 @@ File::File(std::string dirEntry)
 void File::newPath(std::string newPath) {
     fs::rename(filePath, newPath);
     filePath = newPath;
-    
     getSize();
 }
 

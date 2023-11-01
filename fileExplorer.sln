@@ -6,15 +6,25 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fileExplorer", "fileExplorer.vcxproj", "{CC88DB48-E553-40C4-AD69-2AF1AA21F7E4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CustomInclude", "CustomInclude", "{75C073CF-7B09-46DD-B198-25B2E9D56FFD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Classes", "Classes", "{94FD7924-B57F-4707-897F-23F86C5A09D9}"
 	ProjectSection(SolutionItems) = preProject
-		customInclude\Directory.cpp = customInclude\Directory.cpp
-		customInclude\Directory.h = customInclude\Directory.h
-		customInclude\Drive.cpp = customInclude\Drive.cpp
-		customInclude\Drive.h = customInclude\Drive.h
-		customInclude\File.cpp = customInclude\File.cpp
-		customInclude\File.h = customInclude\File.h
-		customInclude\Functions.cpp = customInclude\Functions.cpp
-		customInclude\Functions.h = customInclude\Functions.h
+		customInclude\Classes\Directory.cpp = customInclude\Classes\Directory.cpp
+		customInclude\Classes\Directory.h = customInclude\Classes\Directory.h
+		customInclude\Classes\File.cpp = customInclude\Classes\File.cpp
+		customInclude\Classes\File.h = customInclude\Classes\File.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Functionality", "Functionality", "{15DFB342-2DCF-4033-8A59-D7BB820A9708}"
+	ProjectSection(SolutionItems) = preProject
+		customInclude\Functionality\Functions.cpp = customInclude\Functionality\Functions.cpp
+		customInclude\Functionality\Functions.h = customInclude\Functionality\Functions.h
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{878554D9-EF78-45E7-906F-8E3AFB41EFFA}"
+	ProjectSection(SolutionItems) = preProject
+		customInclude\Main\app.cpp = customInclude\Main\app.cpp
+		customInclude\Main\app.h = customInclude\Main\app.h
 	EndProjectSection
 EndProject
 Global
@@ -36,6 +46,11 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{94FD7924-B57F-4707-897F-23F86C5A09D9} = {75C073CF-7B09-46DD-B198-25B2E9D56FFD}
+		{15DFB342-2DCF-4033-8A59-D7BB820A9708} = {75C073CF-7B09-46DD-B198-25B2E9D56FFD}
+		{878554D9-EF78-45E7-906F-8E3AFB41EFFA} = {75C073CF-7B09-46DD-B198-25B2E9D56FFD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5B8651F9-3800-4078-94E2-D15C26B47979}

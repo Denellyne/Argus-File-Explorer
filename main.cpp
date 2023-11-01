@@ -1,19 +1,19 @@
-#include <iostream>
 #include <vector>
 #include <stack>
-#include "Functions.h"
+#include ".\Main\app.h"
 
 int main() {
-    std::stack<std::string> dirStack;
+    bool programRunning = true;
+
     std::vector<Directory> directories(0, Directory("C:\\"));
-    std::vector<File> files(0,File("fileExplorer.exe"));
-    searchPath("C:\\", directories, files, dirStack);
-    bool a = true;
-    while (a) {   
-        std::string newPath;
-        std::getline(std::cin, newPath);
-        searchPath(newPath, directories, files, dirStack);
-        debugPrint(directories, files);
-    }
+    std::vector<File> files(0, File("fileExplorer.exe"));
+    std::stack<std::string> directoryStack;
+    directoryStack.push("C:\\");
+
+    while (programRunning == true) fileExplorer(directories, files, directoryStack);
+
     return 0;
 }
+
+
+
