@@ -10,7 +10,7 @@ int main() {
     std::stack<std::string> directoryStack;
     directoryStack.push("C:\\");
 
-    while (programRunning == true) fileExplorer(directories, files, directoryStack);
+    while (programRunning) fileExplorer(directories, files, directoryStack);
 
     return 0;
 }

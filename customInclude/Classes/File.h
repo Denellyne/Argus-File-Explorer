@@ -1,12 +1,13 @@
 #pragma once
-#include "Functions.h"
+#include "Functionality/Functions.h"
 #include <iostream>
 class File
 {
 public:
+    File(std::string dirEntry);   
     std::string filePath;
-    File(std::string dirEntry);    
     uintmax_t fileSize;
+
     void newPath(std::string newPath);
     inline void getSize();
     void copyFile(std::string newPath);
