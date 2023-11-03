@@ -4,9 +4,11 @@
 #include <iostream>
 class Directory{
 public:
+//Variables
     std::string filePath;
-    Directory(std::string dirEntry);
 
+//Methods
+    Directory(std::string dirEntry);
     void newPath(std::string newPath);
     void copyDirectory(std::string newPath);
 };

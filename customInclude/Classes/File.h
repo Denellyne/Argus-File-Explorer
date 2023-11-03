@@ -7,13 +7,15 @@
 class File
 {
 public:
-    File(std::string dirEntry);   
+//Variables      
     std::string filePath;
     uintmax_t fileSizeKbs;
     std::string lastModificationTime;
 
-    void newPath(std::string newPath);
+//Methods
+    File(std::string dirEntry);
     inline void getSize();
+    void newPath(std::string newPath);   
     void copyFile(std::string newPath);
     std::string getLastModificationTime();
 };

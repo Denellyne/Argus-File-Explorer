@@ -8,7 +8,7 @@ void fileExplorer(std::vector<Directory>& directories, std::vector<File>& files,
     switch (choice) {
     case 1:
         std::getline(std::cin >> std::ws, newPath);
-        searchPath(newPath, directories, files, directoryStack);
+        searchNewPath(newPath, directories, files, directoryStack);
         break;
     case 2:
         returnPath(directories, files, directoryStack);
