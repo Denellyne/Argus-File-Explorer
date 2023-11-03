@@ -17,7 +17,7 @@ void File::newPath(std::string newPath) {
 }
 
 inline void File::getSize() { // in kBs
-    fileSize = (fs::file_size(filePath))* 0.0009765625;
+    fileSizeKbs = (fs::file_size(filePath))* 0.0009765625;
 }
 
 void File::copyFile(std::string newPath) {

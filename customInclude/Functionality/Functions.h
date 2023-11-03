@@ -9,5 +9,5 @@
 
 void searchPath(std::string Path,std::vector<Directory>& directories, std::vector<File>& files,std::stack<std::string> &dirStack);
 void returnPath(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack);
-void debugPrint(std::vector<Directory>& directories, std::vector<File>& files);
+
 

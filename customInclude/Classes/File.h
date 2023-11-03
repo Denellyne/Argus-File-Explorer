@@ -6,7 +6,7 @@ class File
 public:
     File(std::string dirEntry);   
     std::string filePath;
-    uintmax_t fileSize;
+    uintmax_t fileSizeKbs;
 
     void newPath(std::string newPath);
     inline void getSize();

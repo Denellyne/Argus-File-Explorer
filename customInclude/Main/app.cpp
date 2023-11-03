@@ -9,7 +9,6 @@ void fileExplorer(std::vector<Directory>& directories, std::vector<File>& files,
     case 1:
         std::getline(std::cin >> std::ws, newPath);
         searchPath(newPath, directories, files, directoryStack);
-        debugPrint(directories, files);
         break;
     case 2:
         returnPath(directories, files, directoryStack);
