@@ -42,10 +42,10 @@ void returnPath(std::vector<Directory>& directories, std::vector<File>& files, s
 
 
 void debugPrint(std::vector<Directory>& directories, std::vector<File>& files) {
-    std::cout << "Directories:\n";
+    std::cout << "Directories:\n\n";
     for (int i = 0;i < directories.size(); i++) 
         std::cout << directories[i].filePath << '\n';
-    std::cout << "Files:\n";
+    std::cout << "Files:\n\n";
     for (int i = 0;i < files.size(); i++) 
-        std::cout << files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1) << " Size: " << files[i].fileSizeKbs << " Kbs\n";
+        std::cout << files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1) << "\nSize: " << files[i].fileSizeKbs << " Kbs " << "\nLast modified time: " << files[i].lastModificationTime << '\n' << '\n';
 }
