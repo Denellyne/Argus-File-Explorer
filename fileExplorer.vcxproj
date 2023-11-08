@@ -79,14 +79,14 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <Optimization>MaxSpeed</Optimization>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>.\imgui\header\GL;.\imgui\header\GLFW;.\imgui\header;.\imgui\cpp;C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer;C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer\customInclude;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\imgui\header\GL;.\imgui\header\GLFW;.\imgui\header;.\imgui\cpp;.\customInclude</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>.\imgui\header\GL;.\imgui\header\GLFW;.\imgui\header;.\imgui\cpp;C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer;C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer\customInclude;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\imgui\header\GLFW;.\imgui\header;.\customInclude;.\imgui\cpp</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3dll.lib</AdditionalDependencies>
     </Link>
     <ProjectReference>
@@ -103,7 +103,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>.\imgui\header\GL;.\imgui\header\GLFW;.\imgui\header;.\imgui\cpp;C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer;C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer\customInclude;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\imgui\header\GL;.\imgui\header\GLFW;.\imgui\header;.\imgui\cpp;.\customInclude</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
@@ -112,7 +112,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>.\imgui\header\GL;.\imgui\header\GLFW;.\imgui\header;.\imgui\cpp;C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer;C:\Users\Gustavo Santos\Documents\GitHub\FileExplorer\fileExplorer\customInclude;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\imgui\header\GLFW;.\imgui\header;.\customInclude;.\imgui\cpp</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3dll.lib</AdditionalDependencies>
     </Link>
     <ProjectReference>
@@ -128,14 +128,14 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <Optimization>MaxSpeed</Optimization>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>.\imgui\header\GL;.\imgui\header\GLFW;.\imgui\header;.\imgui\cpp;\customInclude;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\imgui\header\GL;.\imgui\header\GLFW;.\imgui\header;.\imgui\cpp;.\customInclude</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>.\imgui\header\GL;.\imgui\header\GLFW;.\imgui\header;.\imgui\cpp;\customInclude;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\imgui\header\GLFW;.\imgui\header;.\customInclude;.\imgui\cpp</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3dll.lib</AdditionalDependencies>
     </Link>
     <ProjectReference>
@@ -152,11 +152,7 @@
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-<<<<<<< Updated upstream
-      <AdditionalIncludeDirectories>.\customInclude;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-=======
-      <AdditionalIncludeDirectories>.\imgui\header\GL;.\imgui\header\GLFW;.\imgui\header;.\imgui\cpp;.\imgui\GLFW;.\customInclude;.\imgui;%(AdditionalLibraryDirectories)</AdditionalIncludeDirectories>
->>>>>>> Stashed changes
+      <AdditionalIncludeDirectories>.\imgui\header\GL;.\imgui\header\GLFW;.\imgui\header;.\imgui\cpp;.\customInclude</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <DebugInformationFormat>None</DebugInformationFormat>
     </ClCompile>
@@ -165,13 +161,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-<<<<<<< Updated upstream
-      <AdditionalLibraryDirectories>.\customInclude;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
-=======
-      <AdditionalLibraryDirectories>.\imgui\header\GL;.\imgui\header\GLFW;.\imgui\header;.\imgui\cpp;.\imgui\GLFW;.\customInclude;.\imgui;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>.\imgui\header\GLFW;.\imgui\header;.\customInclude;.\imgui\cpp</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3dll.lib</AdditionalDependencies>
->>>>>>> Stashed changes
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -179,15 +170,12 @@
     <ClCompile Include="customInclude\Classes\File.cpp" />
     <ClCompile Include="customInclude\Functionality\Functions.cpp" />
     <ClCompile Include="customInclude\Main\app.cpp" />
-<<<<<<< Updated upstream
-=======
     <ClCompile Include="imgui\cpp\imgui.cpp" />
     <ClCompile Include="imgui\cpp\imgui_draw.cpp" />
     <ClCompile Include="imgui\cpp\imgui_impl_glfw.cpp" />
     <ClCompile Include="imgui\cpp\imgui_impl_opengl3.cpp" />
     <ClCompile Include="imgui\cpp\imgui_tables.cpp" />
     <ClCompile Include="imgui\cpp\imgui_widgets.cpp" />
->>>>>>> Stashed changes
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -195,8 +183,6 @@
     <ClInclude Include="customInclude\Classes\File.h" />
     <ClInclude Include="customInclude\Functionality\Functions.h" />
     <ClInclude Include="customInclude\Main\app.h" />
-<<<<<<< Updated upstream
-=======
     <ClInclude Include="imgui\header\GLFW\glfw3.h" />
     <ClInclude Include="imgui\header\GLFW\glfw3native.h" />
     <ClInclude Include="imgui\header\imconfig.h" />
@@ -208,7 +194,6 @@
     <ClInclude Include="imgui\header\imstb_rectpack.h" />
     <ClInclude Include="imgui\header\imstb_textedit.h" />
     <ClInclude Include="imgui\header\imstb_truetype.h" />
->>>>>>> Stashed changes
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

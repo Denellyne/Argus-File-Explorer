@@ -1,111 +1,33 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Arquivos de Origem">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Arquivos de Cabeçalho">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-    <Filter Include="Arquivos de Recurso">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
-    </Filter>
-<<<<<<< Updated upstream
-=======
-    <Filter Include="IMGUI">
-      <UniqueIdentifier>{fe0dd702-8043-478d-bf9f-578df3743a0a}</UniqueIdentifier>
-    </Filter>
->>>>>>> Stashed changes
+    <ClCompile Include="customInclude\Classes\Directory.cpp" />
+    <ClCompile Include="customInclude\Classes\File.cpp" />
+    <ClCompile Include="customInclude\Functionality\Functions.cpp" />
+    <ClCompile Include="customInclude\Main\app.cpp" />
+    <ClCompile Include="imgui\cpp\imgui.cpp" />
+    <ClCompile Include="imgui\cpp\imgui_draw.cpp" />
+    <ClCompile Include="imgui\cpp\imgui_impl_glfw.cpp" />
+    <ClCompile Include="imgui\cpp\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="imgui\cpp\imgui_tables.cpp" />
+    <ClCompile Include="imgui\cpp\imgui_widgets.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="customInclude\Main\app.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="customInclude\Functionality\Functions.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="customInclude\Classes\Directory.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-    <ClCompile Include="customInclude\Classes\File.cpp">
-      <Filter>Arquivos de Origem</Filter>
-    </ClCompile>
-<<<<<<< Updated upstream
-=======
-    <ClCompile Include="imgui\cpp\imgui.cpp">
-      <Filter>IMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\cpp\imgui_draw.cpp">
-      <Filter>IMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\cpp\imgui_impl_glfw.cpp">
-      <Filter>IMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\cpp\imgui_impl_opengl3.cpp">
-      <Filter>IMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\cpp\imgui_tables.cpp">
-      <Filter>IMGUI</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui\cpp\imgui_widgets.cpp">
-      <Filter>IMGUI</Filter>
-    </ClCompile>
->>>>>>> Stashed changes
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="customInclude\Main\app.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="customInclude\Functionality\Functions.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="customInclude\Classes\Directory.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-    <ClInclude Include="customInclude\Classes\File.h">
-      <Filter>Arquivos de Cabeçalho</Filter>
-    </ClInclude>
-<<<<<<< Updated upstream
-=======
-    <ClInclude Include="imgui\header\GLFW\glfw3.h">
-      <Filter>IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\header\GLFW\glfw3native.h">
-      <Filter>IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\header\imconfig.h">
-      <Filter>IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\header\imgui.h">
-      <Filter>IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\header\imgui_impl_glfw.h">
-      <Filter>IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\header\imgui_impl_opengl3.h">
-      <Filter>IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\header\imgui_internal.h">
-      <Filter>IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\header\imstb_rectpack.h">
-      <Filter>IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\header\imstb_textedit.h">
-      <Filter>IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\header\imstb_truetype.h">
-      <Filter>IMGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\header\imgui_impl_opengl3_loader.h">
-      <Filter>IMGUI</Filter>
-    </ClInclude>
->>>>>>> Stashed changes
+    <ClInclude Include="customInclude\Classes\Directory.h" />
+    <ClInclude Include="customInclude\Classes\File.h" />
+    <ClInclude Include="customInclude\Functionality\Functions.h" />
+    <ClInclude Include="customInclude\Main\app.h" />
+    <ClInclude Include="imgui\header\GLFW\glfw3.h" />
+    <ClInclude Include="imgui\header\GLFW\glfw3native.h" />
+    <ClInclude Include="imgui\header\imconfig.h" />
+    <ClInclude Include="imgui\header\imgui.h" />
+    <ClInclude Include="imgui\header\imgui_impl_glfw.h" />
+    <ClInclude Include="imgui\header\imgui_impl_opengl3.h" />
+    <ClInclude Include="imgui\header\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="imgui\header\imgui_internal.h" />
+    <ClInclude Include="imgui\header\imstb_rectpack.h" />
+    <ClInclude Include="imgui\header\imstb_textedit.h" />
+    <ClInclude Include="imgui\header\imstb_truetype.h" />
   </ItemGroup>
 </Project>
