@@ -3,14 +3,11 @@
 #include <vector>
 #include <stack>
 
-<<<<<<< Updated upstream
-=======
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include <GLFW/glfw3.h>
 
->>>>>>> Stashed changes
 void fileExplorer(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack) {
     int choice = 0;
     std::string newPath;
