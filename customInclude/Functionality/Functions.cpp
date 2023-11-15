@@ -4,6 +4,8 @@
 #include <iostream>
 #include <stack>
 
+
+
 namespace fs = std::filesystem;
 
 void debugPrint(std::vector<Directory>& directories, std::vector<File>& files);
@@ -21,8 +23,8 @@ void searchNewPath(std::string Path,std::vector<Directory>& directories, std::ve
         }
         catch (fs::filesystem_error) {
             std::cout << "Invalid Path\nInsert another path\n";
-            std::getline(std::cin >> std::ws, Path);
-            searchNewPath(Path, directories, files, directoryStack);
+            //std::getline(std::cin >> std::ws, Path);
+            //searchNewPath(Path, directories, files, directoryStack);
         }
     }
 }
@@ -50,7 +52,20 @@ void debugPrint(std::vector<Directory>& directories, std::vector<File>& files) {
     std::cout << "Directories:\n\n";
     for (int i = 0;i < directories.size(); i++)
         std::cout << directories[i].filePath << '\n';
-    std::cout << "Files:\n\n";
+    std::cout << "\nFiles:\n\n";
     for (int i = 0;i < files.size(); i++)
         std::cout << files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1) << "\nSize: " << files[i].fileSizeKbs << " Kbs " << "\nLast modified time: " << files[i].lastModificationTime << '\n' << '\n';
+}
+
+void recursive(std::string path){
+    std::vector<std::string> test;
+    for (auto& dirEntry : fs::recursive_directory_iterator(input, fs::directory_options::skip_permission_denied)){
+        try {
+            test.push_back(dirEntry.path().string());
+        }        
+        catch (std::system_error) {
+            &fs::recursive_directory_iterator::increment;
+        }
+    }
+        
 }

@@ -34,6 +34,9 @@
     <ClCompile Include="imgui\cpp\imgui_widgets.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="imgui\cpp\imgui_stdlib.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="customInclude\Main\app.h">
@@ -79,6 +82,9 @@
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="imgui\header\imstb_truetype.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\header\imgui_stdlib.h">
       <Filter>ImGui</Filter>
     </ClInclude>
   </ItemGroup>
