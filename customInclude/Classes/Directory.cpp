@@ -1,6 +1,6 @@
-#include "Functionality/Functions.h"
 #include "Directory.h"
-#include <iostream>
+#include <filesystem>
+#include <string>
 namespace fs = std::filesystem;
 
 Directory::Directory(std::string dirEntry)

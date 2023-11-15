@@ -1,6 +1,5 @@
 #pragma once
-#include "Functionality/Functions.h"
-#include <iostream>
+#include <string>
 #include <filesystem>
 #include <ctime>
 #include <format>

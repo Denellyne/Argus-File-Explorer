@@ -1,5 +1,5 @@
 #include "app.h"
-#include ".\Functionality\Functions.h"
+#include ".\Functionality\Search\Search.h"
 #include <vector>
 #include <stack>
 
@@ -30,6 +30,7 @@ int GUI(){
     std::vector<Directory> directories(0, Directory("C:\\"));
     std::vector<File> files(0, File("fileExplorer.exe"));
     std::stack<std::string> directoryStack;
+    std::vector<std::string> drive;
     directoryStack.push("C:\\");
 
     glfwInit();
@@ -49,6 +50,7 @@ int GUI(){
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
+    driveIndex(drive);
 
     while (!glfwWindowShouldClose(window)) { // Render
         glfwPollEvents();
@@ -90,7 +92,6 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     Begin("##FileExplorer",NULL,ImGuiWindowFlags_NoTitleBar);
     PopStyleVar();
     //BeginMainMenuBar();
-    if (Button("Recursive")) recursive("C:\\");
     if (InputText("Directory", &userInputDirectory, ImGuiInputTextFlags_EnterReturnsTrue)) searchNewPath(userInputDirectory, directories, files, directoryStack);
     //EndMainMenuBar();
     BeginChild("Files", { 0,0 }, false, ImGuiWindowFlags_AlwaysVerticalScrollbar);

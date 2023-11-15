@@ -1,7 +1,5 @@
 #pragma once
-
-#include "Functionality/Functions.h"
-#include <iostream>
+#include <string>
 class Directory{
 public:
 //Variables

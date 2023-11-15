@@ -1,18 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="customInclude\Main\app.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="customInclude\Classes\Directory.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="customInclude\Classes\File.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="customInclude\Functionality\Functions.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Source</Filter>
     </ClCompile>
@@ -37,20 +25,23 @@
     <ClCompile Include="imgui\cpp\imgui_stdlib.cpp">
       <Filter>ImGui</Filter>
     </ClCompile>
+    <ClCompile Include="customInclude\Classes\File.cpp">
+      <Filter>CustomInclude\Source\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="customInclude\Classes\Directory.cpp">
+      <Filter>CustomInclude\Source\Classes</Filter>
+    </ClCompile>
+    <ClCompile Include="customInclude\Functionality\Search\Search.cpp">
+      <Filter>CustomInclude\Source\Functionality</Filter>
+    </ClCompile>
+    <ClCompile Include="customInclude\Main\app.cpp">
+      <Filter>CustomInclude\Source\Functionality</Filter>
+    </ClCompile>
+    <ClCompile Include="customInclude\Functionality\Debug\debug.cpp">
+      <Filter>CustomInclude\Source\Functionality</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="customInclude\Main\app.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="customInclude\Classes\Directory.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="customInclude\Classes\File.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="customInclude\Functionality\Functions.h">
-      <Filter>Header</Filter>
-    </ClInclude>
     <ClInclude Include="imgui\header\GLFW\glfw3.h">
       <Filter>ImGui</Filter>
     </ClInclude>
@@ -87,16 +78,49 @@
     <ClInclude Include="imgui\header\imgui_stdlib.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="customInclude\Classes\Directory.h">
+      <Filter>CustomInclude\Header\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="customInclude\Classes\File.h">
+      <Filter>CustomInclude\Header\Classes</Filter>
+    </ClInclude>
+    <ClInclude Include="customInclude\Functionality\Search\Search.h">
+      <Filter>CustomInclude\Header\Functionality</Filter>
+    </ClInclude>
+    <ClInclude Include="customInclude\Main\app.h">
+      <Filter>CustomInclude\Header\Functionality</Filter>
+    </ClInclude>
+    <ClInclude Include="customInclude\Functionality\Debug\debug.h">
+      <Filter>CustomInclude\Header\Functionality</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
       <UniqueIdentifier>{267dd448-5135-4ec2-8f22-7dc44833cd9c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header">
-      <UniqueIdentifier>{f551e675-beab-45d4-8973-868bd9933961}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ImGui">
       <UniqueIdentifier>{5d0952d3-bf49-4f64-9eed-c103f1b779b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CustomInclude">
+      <UniqueIdentifier>{f381543d-c56e-411d-b387-d2b61d66e23f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CustomInclude\Header">
+      <UniqueIdentifier>{b4ffe279-cabb-47d1-b585-c9beea25628f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CustomInclude\Source">
+      <UniqueIdentifier>{55dd9bf0-b269-47e6-8fa3-40b509427583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CustomInclude\Header\Classes">
+      <UniqueIdentifier>{96eda8ef-f26c-4473-9176-fb47db61f475}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CustomInclude\Header\Functionality">
+      <UniqueIdentifier>{7bed9b2b-68a3-4f5a-bd07-c153be642efe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CustomInclude\Source\Classes">
+      <UniqueIdentifier>{cca2eb2d-7c0d-400b-b03e-96e5818b7da8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CustomInclude\Source\Functionality">
+      <UniqueIdentifier>{56a428c7-e81b-4f74-9396-e781ce58506d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

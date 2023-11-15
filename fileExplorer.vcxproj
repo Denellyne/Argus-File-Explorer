@@ -168,7 +168,8 @@
   <ItemGroup>
     <ClCompile Include="customInclude\Classes\Directory.cpp" />
     <ClCompile Include="customInclude\Classes\File.cpp" />
-    <ClCompile Include="customInclude\Functionality\Functions.cpp" />
+    <ClCompile Include="customInclude\Functionality\Debug\debug.cpp" />
+    <ClCompile Include="customInclude\Functionality\Search\Search.cpp" />
     <ClCompile Include="customInclude\Main\app.cpp" />
     <ClCompile Include="imgui\cpp\imgui.cpp" />
     <ClCompile Include="imgui\cpp\imgui_draw.cpp" />
@@ -182,7 +183,8 @@
   <ItemGroup>
     <ClInclude Include="customInclude\Classes\Directory.h" />
     <ClInclude Include="customInclude\Classes\File.h" />
-    <ClInclude Include="customInclude\Functionality\Functions.h" />
+    <ClInclude Include="customInclude\Functionality\Debug\debug.h" />
+    <ClInclude Include="customInclude\Functionality\Search\Search.h" />
     <ClInclude Include="customInclude\Main\app.h" />
     <ClInclude Include="imgui\header\GLFW\glfw3.h" />
     <ClInclude Include="imgui\header\GLFW\glfw3native.h" />

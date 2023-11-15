@@ -1,7 +1,6 @@
-#include "Functionality/Functions.h"
-#include <format>
 #include "File.h"
-#include <iostream>
+#include <format>
+#include <string>
 namespace fs = std::filesystem;
 
 File::File(std::string dirEntry)
