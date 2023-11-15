@@ -57,7 +57,7 @@ void debugPrint(std::vector<Directory>& directories, std::vector<File>& files) {
         std::cout << files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1) << "\nSize: " << files[i].fileSizeKbs << " Kbs " << "\nLast modified time: " << files[i].lastModificationTime << '\n' << '\n';
 }
 
-void recursive(std::string path){
+void recursive(std::string input){
     std::vector<std::string> test;
     for (auto& dirEntry : fs::recursive_directory_iterator(input, fs::directory_options::skip_permission_denied)){
         try {
