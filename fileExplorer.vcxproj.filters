@@ -40,6 +40,9 @@
     <ClCompile Include="customInclude\Functionality\Debug\debug.cpp">
       <Filter>CustomInclude\Source\Functionality</Filter>
     </ClCompile>
+    <ClCompile Include="customInclude\Functionality\Drive\drive.cpp">
+      <Filter>CustomInclude\Source\Functionality</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\header\GLFW\glfw3.h">
@@ -91,6 +94,9 @@
       <Filter>CustomInclude\Header\Functionality</Filter>
     </ClInclude>
     <ClInclude Include="customInclude\Functionality\Debug\debug.h">
+      <Filter>CustomInclude\Header\Functionality</Filter>
+    </ClInclude>
+    <ClInclude Include="customInclude\Functionality\Drive\drive.h">
       <Filter>CustomInclude\Header\Functionality</Filter>
     </ClInclude>
   </ItemGroup>

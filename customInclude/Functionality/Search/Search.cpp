@@ -42,17 +42,3 @@ void searchPath(std::string Path, std::vector<Directory>& directories, std::vect
         dirEntry.is_directory() ? directories.push_back(Directory(dirEntry.path().generic_string())) : files.push_back(File(dirEntry.path().generic_string()));
 }
 
-
-
-
-void driveIndex(std::vector<std::string>& drive){
-
-    for (auto& dirEntry : fs::recursive_directory_iterator("C:\\", fs::directory_options::skip_permission_denied)) {
-        try {
-            drive.push_back(dirEntry.path().string());
-        }        
-        catch (std::system_error) {
-            &fs::recursive_directory_iterator::increment;
-        }
-    }       
-}

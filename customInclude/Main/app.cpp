@@ -1,5 +1,6 @@
 #include "app.h"
 #include ".\Functionality\Search\Search.h"
+#include "Functionality/Drive/drive.h"
 #include <vector>
 #include <stack>
 
@@ -8,21 +9,6 @@
 #include "imgui_impl_opengl3.h"
 #include "imgui_stdlib.h"
 #include <GLFW/glfw3.h>
-
-void fileExplorer(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack) {
-    int choice = 0;
-    std::string newPath;
-    std::cin >> choice;
-    switch (choice) {
-    case 1:
-        std::getline(std::cin >> std::ws, newPath);
-        searchNewPath(newPath, directories, files, directoryStack);
-        break;
-    case 2:
-        returnPath(directories, files, directoryStack);
-        break;
-    }
-}
 
 void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack);
 
@@ -78,7 +64,6 @@ int GUI(){
     return 0;
 }
 
-
 void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack) {
     using namespace ImGui;
 
@@ -88,15 +73,52 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     SetNextWindowSize(ImVec2(io.DisplaySize.x,io.DisplaySize.y));
     SetNextWindowPos(ImVec2(0,0));
 
-
     Begin("##FileExplorer",NULL,ImGuiWindowFlags_NoTitleBar);
     PopStyleVar();
-    //BeginMainMenuBar();
+
     if (InputText("Directory", &userInputDirectory, ImGuiInputTextFlags_EnterReturnsTrue)) searchNewPath(userInputDirectory, directories, files, directoryStack);
-    //EndMainMenuBar();
     BeginChild("Files", { 0,0 }, false, ImGuiWindowFlags_AlwaysVerticalScrollbar);
     EndChild();
 
 
     End();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//void fileExplorer(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack) {
+//    int choice = 0;
+//    std::string newPath;
+//    std::cin >> choice;
+//    switch (choice) {
+//    case 1:
+//        std::getline(std::cin >> std::ws, newPath);
+//        searchNewPath(newPath, directories, files, directoryStack);
+//        break;
+//    case 2:
+//        returnPath(directories, files, directoryStack);
+//        break;
+//    }
+//}
