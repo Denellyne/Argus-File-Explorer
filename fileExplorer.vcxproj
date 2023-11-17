@@ -207,7 +207,10 @@
     <ResourceCompile Include="fileExplorer1.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="icons\folder.jpg" />
+    <Image Include="icons\addfile.png" />
+    <Image Include="icons\addfolder.png" />
+    <Image Include="icons\file.png" />
+    <Image Include="icons\folder.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

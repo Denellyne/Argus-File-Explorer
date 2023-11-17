@@ -16,7 +16,7 @@
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture);
 int GUI();
 
-void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack) {
+void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,GLuint folderIcon,GLuint fileIcon) {
     using namespace ImGui;
 
     std::string userInputDirectory;
@@ -29,10 +29,18 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     PopStyleVar();
     
     //Search Bar
-    if (InputText("Directory", &userInputDirectory, ImGuiInputTextFlags_EnterReturnsTrue)) searchNewPath(userInputDirectory, directories, files, directoryStack);
+    if (InputText((directoryStack.top()).c_str(), &userInputDirectory, ImGuiInputTextFlags_EnterReturnsTrue)) searchNewPath(userInputDirectory, directories, files, directoryStack);
 
     //Display icons
-    //for (int i = 0;i < files.size();i++) Image((void*)(intptr_t)my_image_texture, ImVec2(my_image_width/4, my_image_height/4));
+    for (int i = 0; i < directories.size(); i++) {
+        Image((void*)(intptr_t)folderIcon, ImVec2(40, 40));
+        Text((directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1).c_str()));
+    }
+    for (int i = 0; i < files.size(); i++){
+        Image((void*)(intptr_t)fileIcon, ImVec2(40, 40));
+        Text((files[i].filePath.substr(files[i].filePath.find_last_of("//")+1).c_str()));
+    }
+    
 
     BeginChild("Files", { 0,0 }, false, ImGuiWindowFlags_AlwaysVerticalScrollbar);
     EndChild();
@@ -56,8 +64,8 @@ int GUI() {
 
     GLuint folderIcon = 0;
     GLuint fileIcon = 0;
-    LoadTextureFromFile(".icons/folder.jpg", &folderIcon);
-    //LoadTextureFromFile(".icons/file.jpg", &fileIcon);
+    LoadTextureFromFile("./icons/folder.png", &folderIcon);
+    LoadTextureFromFile("./icons/file.png", &fileIcon);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -78,7 +86,7 @@ int GUI() {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        app(directories, files, directoryStack);
+        app(directories, files, directoryStack,folderIcon,fileIcon);
 
         ImGui::Render();
 
