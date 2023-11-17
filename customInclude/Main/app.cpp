@@ -48,8 +48,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     //Hotkeys
 
     if (IsKeyPressed(ImGuiKey_Escape) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory);
-
-
+    if (IsKeyDown(ImGuiMod_Alt) && IsKeyDown(ImGuiKey_Q)) _exit(NULL); //Ctrl + Alt + Q || AltGr + Q
 
     SetCursorPos({ io.DisplaySize.x/6,5});
 
@@ -132,7 +131,6 @@ int GUI() {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-
 
         app(directories, files, directoryStack,folderIcon,fileIcon,userInputDirectory);
 
