@@ -45,6 +45,12 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     PopStyleColor(3);
 
 
+    //Hotkeys
+
+    if (IsKeyPressed(ImGuiKey_Escape) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory);
+
+
+
     SetCursorPos({ io.DisplaySize.x/6,5});
 
     if (InputText("##NULL", &userInputDirectory, ImGuiInputTextFlags_EnterReturnsTrue)) searchNewPath(userInputDirectory, directories, files, directoryStack);
@@ -57,8 +63,6 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
     ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.182, 0.186, 0.20, 1));
     ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.182, 0.186, 0.20, 1));
-
-
 
 
     for (int i = 0; i < directories.size(); i++) {
