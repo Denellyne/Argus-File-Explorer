@@ -4,6 +4,7 @@
 
 void Debug::print(std::vector<Directory>& directories, std::vector<File>& files)
 {
+
     std::cout << "Directories:\n\n";
     for (int i = 0; i < directories.size(); i++)
         std::cout << directories[i].filePath << '\n';

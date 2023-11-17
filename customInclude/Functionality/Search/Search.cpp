@@ -17,6 +17,7 @@ void searchNewPath(std::string Path,std::vector<Directory>& directories, std::ve
         try {
             searchPath(Path, directories, files, directoryStack);
             directoryStack.push(Path);
+            std::cout << Path << '\n';
             Debug::print(directories, files);
         }
         catch (fs::filesystem_error) {
@@ -24,13 +25,11 @@ void searchNewPath(std::string Path,std::vector<Directory>& directories, std::ve
         }
     }
 }
-void returnPath(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack) {
-    if (directoryStack.size() > 1 ) {
-        directoryStack.pop();
-        searchPath(directoryStack.top(), directories, files, directoryStack);
-        Debug::print(directories, files);
-    }
-    else std::cout << "Invalid return\nStack only contains 1 element\n";
+void returnPath(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,std::string &userInputDirectory) {
+    directoryStack.pop();
+    userInputDirectory = directoryStack.top();
+    searchPath(directoryStack.top(), directories, files, directoryStack);
+    Debug::print(directories, files);
 }
 
 // Private

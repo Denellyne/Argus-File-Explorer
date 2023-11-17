@@ -8,5 +8,5 @@
 #include <stack>
 
 void searchNewPath(std::string Path,std::vector<Directory>& directories, std::vector<File>& files,std::stack<std::string> &dirStack);
-void returnPath(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack);
+void returnPath(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,std::string& userInputDirectory);
 

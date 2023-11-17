@@ -87,7 +87,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>.\imgui\header\GLFW;.\imgui\header;.\customInclude;.\imgui\cpp</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;shell32.lib</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
@@ -113,7 +113,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>.\imgui\header\GLFW;.\imgui\header;.\customInclude;.\imgui\cpp</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;shell32.lib</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
@@ -136,7 +136,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>.\imgui\header\GLFW;.\imgui\header;.\customInclude;.\imgui\cpp</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;shell32.lib</AdditionalDependencies>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
@@ -162,7 +162,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>.\imgui\header\GLFW;.\imgui\header;.\customInclude;.\imgui\cpp</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opengl32.lib;glfw3dll.lib</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glfw3dll.lib;shell32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -207,6 +207,9 @@
     <Image Include="icons\addfolder.png" />
     <Image Include="icons\file.png" />
     <Image Include="icons\folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="glfw3.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

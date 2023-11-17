@@ -1,4 +1,5 @@
 #pragma once
+#include <windows.h> 
 #include ".\Functionality\Search\Search.h"
 
 int GUI();
