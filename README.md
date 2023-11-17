@@ -1,4 +1,4 @@
-# File Explorer
+# Argus - File Explorer
 
 File Explorer written in C++ striving for speed and ease of use
 
