@@ -8,6 +8,18 @@ File Explorer written in C++ striving for speed and ease of use
 ![image](https://github.com/Denellyne/FileExplorer/assets/56112881/dfd7fd23-be49-4ad9-b33e-efb7bae2f820)
 
 
+## HotKeys
+Go back a folder:
+
+	Hotkey:Escape
+Close App:
+
+	Ctrl + Alt + Q
+	AltGr + Q
+
+
+##Everything Below is yet to be implemented
+
 ## Create files and folders
 
 Create files and folders by clicking on the "New File" icon and "New Folder" icon respectively	
@@ -24,11 +36,3 @@ Left clicking  a icon gives you a plethora of options such as
 	Delete File/Folder
 	See Properties
 
-## HotKeys
-Go back a folder:
-
-	Hotkey:Escape
-Close App:
-
-	Ctrl + Alt + Q
-	AltGr + Q
