@@ -18,7 +18,7 @@ Close App:
 	AltGr + Q
 
 
-##Everything Below is yet to be implemented
+## Everything Below is yet to be implemented
 
 ## Create files and folders
 
