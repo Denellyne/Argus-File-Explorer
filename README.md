@@ -2,10 +2,10 @@
 
 File Explorer written in C++ striving for speed and ease of use
 
-![image](https://github.com/Denellyne/FileExplorer/assets/56112881/7b517731-1e60-47b1-8bc0-5a426eece81c)
 
 # Minimalistic UI
 
+![image](https://github.com/Denellyne/FileExplorer/assets/56112881/dfd7fd23-be49-4ad9-b33e-efb7bae2f820)
 
 
 ## Create files and folders
