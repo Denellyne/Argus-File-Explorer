@@ -92,7 +92,7 @@ int GUI() {
 
     //Variables
     std::vector<Directory> directories(0, Directory("C:\\"));
-    std::vector<File> files(0, File("fileExplorer.exe"));
+    std::vector<File> files(0, File("Argus.exe"));
     std::stack<std::string> directoryStack;
     std::vector<std::string> drive;
     directoryStack.push("C:/");
@@ -101,7 +101,7 @@ int GUI() {
     // GUI BoilerPlate
     glfwInit();
 
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "File Explorer", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "Argus", nullptr, nullptr);
     if (window == nullptr) return 1;
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);

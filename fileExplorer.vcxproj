@@ -24,6 +24,7 @@
     <ProjectGuid>{cc88db48-e553-40c4-ad69-2af1aa21f7e4}</ProjectGuid>
     <RootNamespace>fileExplorer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>Argus</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
