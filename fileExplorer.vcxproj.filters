@@ -99,6 +99,10 @@
     <ClInclude Include="customInclude\Functionality\Drive\drive.h">
       <Filter>CustomInclude\Header\Functionality</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="imgui\header\stb_image.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
@@ -128,5 +132,13 @@
     <Filter Include="CustomInclude\Source\Functionality">
       <UniqueIdentifier>{56a428c7-e81b-4f74-9396-e781ce58506d}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="fileExplorer1.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icons\folder.jpg">
+      <Filter>Source</Filter>
+    </Image>
   </ItemGroup>
 </Project>

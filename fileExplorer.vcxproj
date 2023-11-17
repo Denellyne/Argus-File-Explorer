@@ -200,6 +200,14 @@
     <ClInclude Include="imgui\header\imstb_rectpack.h" />
     <ClInclude Include="imgui\header\imstb_textedit.h" />
     <ClInclude Include="imgui\header\imstb_truetype.h" />
+    <ClInclude Include="imgui\header\stb_image.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="fileExplorer1.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icons\folder.jpg" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
