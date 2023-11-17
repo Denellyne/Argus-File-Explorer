@@ -20,6 +20,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     using namespace ImGui;
 
     std::string userInputDirectory;
+    ImVec2 iconSize = {40,40};
     ImGuiIO& io = ImGui::GetIO();
     PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
     SetNextWindowSize(ImVec2(io.DisplaySize.x,io.DisplaySize.y));
@@ -33,11 +34,11 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
 
     //Display icons
     for (int i = 0; i < directories.size(); i++) {
-        Image((void*)(intptr_t)folderIcon, ImVec2(40, 40));
+        Image((void*)(intptr_t)folderIcon, iconSize);
         Text((directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1).c_str()));
     }
     for (int i = 0; i < files.size(); i++){
-        Image((void*)(intptr_t)fileIcon, ImVec2(40, 40));
+        Image((void*)(intptr_t)fileIcon, iconSize);
         Text((files[i].filePath.substr(files[i].filePath.find_last_of("//")+1).c_str()));
     }
     
