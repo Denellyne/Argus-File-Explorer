@@ -36,3 +36,6 @@ Left clicking  a icon gives you a plethora of options such as
 	Delete File/Folder
 	See Properties
 
+## Search for specific files
+
+Instead of searching for paths search directly for files using only its name
