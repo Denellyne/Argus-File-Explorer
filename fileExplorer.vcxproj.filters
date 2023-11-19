@@ -151,7 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="glfw3.dll">
-      <Filter>Source</Filter>
+      <Filter>ImGui</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -16,8 +16,8 @@
 
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture);
 int GUI();
-
-void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,GLuint folderIcon,GLuint fileIcon,std::string &userInputDirectory) {
+//GLuint folderIcon,GLuint fileIcon
+void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,std::vector<GLuint> &Icons,std::string &userInputDirectory,bool &darkMode) {
 
     //Boilerplate Window Code
     using namespace ImGui;
@@ -30,12 +30,28 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     SetNextWindowPos(ImVec2(0,0));
     ImGuiStyle& style = ImGui::GetStyle();
     
-    style.Colors[ImGuiCol_ChildBg] = ImVec4(0.082, 0.086, 0.10, 1);
+    //Theme Switcher
+    if (darkMode) {
+        style.Colors[ImGuiCol_Text] = ImVec4(1,1,1,1);
+        style.Colors[ImGuiCol_WindowBg] = ImVec4(0.082, 0.086, 0.09,1);
+        style.Colors[ImGuiCol_ChildBg] = ImVec4(0.082, 0.086, 0.10, 1); 
 
-    //Light Mode
-    //style.Colors[ImGuiCol_WindowBg] = ImVec4(0.15, 0.17, 0.30, 1.0);
-    //style.Colors[ImGuiCol_ChildBg] = ImVec4(0.94, 1.00, 1.00, 1);
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.125, 0.196, 0.302, 1));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.185, 0.186, 0.302, 1));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.185, 0.186, 0.302, 1));
+    }
+    else {
+        //Light Mode
 
+        style.Colors[ImGuiCol_Text] = ImVec4(0.082, 0.086, 0.09, 1);
+        style.Colors[ImGuiCol_WindowBg] = ImVec4(0.15, 0.17, 0.30, 1.0);
+        style.Colors[ImGuiCol_ChildBg] = ImVec4(0.94, 1.00, 1.00, 1);
+
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.125, 0.196, 0.302, 1));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.185, 0.186, 0.302, 1));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.185, 0.186, 0.302, 1));
+    }
+    
 
     Begin("##FileExplorer",NULL,ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
@@ -43,12 +59,13 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     
     //Button
     SetCursorScreenPos({ 9,5 });
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.125, 0.196, 0.302, 1));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.185, 0.186, 0.302, 1));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.185, 0.186, 0.302, 1));
-
     if (Button("<", { 20,20 }) && directoryStack.size() > 1) returnPath(directories, files, directoryStack,userInputDirectory);
+    SetCursorScreenPos({ 30,5 });
+    if (Button(">", { 20,20 }) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory);
+    SetCursorScreenPos({ 51,5 });
+    if (ImageButton((void*)(intptr_t)Icons[0], {14,14})) darkMode = !darkMode;
     PopStyleColor(3);
+
 
 
     //Hotkeys
@@ -61,6 +78,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     if (InputText("##NULL", &userInputDirectory, ImGuiInputTextFlags_EnterReturnsTrue)) searchNewPath(userInputDirectory, directories, files, directoryStack);
 
     BeginChild("##NULL");
+    
 
     //Display icons
 
@@ -71,7 +89,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
 
 
     for (int i = 0; i < directories.size(); i++) {
-        ImageButton((void*)(intptr_t)folderIcon, iconSize);
+        ImageButton((void*)(intptr_t)Icons[1], iconSize);
         if (IsItemHovered() && IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
             userInputDirectory = directories[i].filePath;
             searchNewPath(userInputDirectory, directories, files, directoryStack);           
@@ -80,7 +98,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
         NextColumn();
     }
     for (int i = 0; i < files.size(); i++){
-        ImageButton((void*)(intptr_t)fileIcon, iconSize);
+        ImageButton((void*)(intptr_t)Icons[2], iconSize);
         if (IsItemHovered() && IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
             ShellExecuteA(NULL,"open",files[i].filePath.c_str(), NULL, NULL, SW_SHOWDEFAULT);
         }
@@ -101,8 +119,11 @@ int GUI() {
     std::vector<File> files(0, File("Argus.exe"));
     std::stack<std::string> directoryStack;
     std::vector<std::string> drive;
-    directoryStack.push("C:/");
+    std::vector <GLuint> Icons;
     std::string userInputDirectory;
+    bool darkMode = true;
+    directoryStack.push("C:/");
+    Icons.reserve(3);
 
 
 
@@ -122,18 +143,17 @@ int GUI() {
     images[0].pixels = icon;
     glfwSetWindowIcon(window, 1, images);
 
-    GLuint folderIcon = 0;
-    GLuint fileIcon = 0;
-    LoadTextureFromFile("./icons/folder.png", &folderIcon);
-    LoadTextureFromFile("./icons/file.png", &fileIcon);
+    LoadTextureFromFile("./icons/sun.png", &Icons[0]);
+    LoadTextureFromFile("./icons/folder.png", &Icons[1]);
+    LoadTextureFromFile("./icons/file.png", &Icons[2]);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     ImGui::StyleColorsDark();
+    
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -148,7 +168,7 @@ int GUI() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        app(directories, files, directoryStack,folderIcon,fileIcon,userInputDirectory);
+        app(directories, files, directoryStack,Icons,userInputDirectory,darkMode);
 
         ImGui::Render();
 
