@@ -29,7 +29,13 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     SetNextWindowSize(ImVec2(io.DisplaySize.x,io.DisplaySize.y));
     SetNextWindowPos(ImVec2(0,0));
     ImGuiStyle& style = ImGui::GetStyle();
+    
     style.Colors[ImGuiCol_ChildBg] = ImVec4(0.082, 0.086, 0.10, 1);
+
+    //Light Mode
+    //style.Colors[ImGuiCol_WindowBg] = ImVec4(0.15, 0.17, 0.30, 1.0);
+    //style.Colors[ImGuiCol_ChildBg] = ImVec4(0.94, 1.00, 1.00, 1);
+
 
     Begin("##FileExplorer",NULL,ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
@@ -98,6 +104,8 @@ int GUI() {
     directoryStack.push("C:/");
     std::string userInputDirectory;
 
+
+
     // GUI BoilerPlate
     glfwInit();
 
@@ -105,6 +113,14 @@ int GUI() {
     if (window == nullptr) return 1;
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
+
+    int width, height, channels;
+    unsigned char* icon = stbi_load("./icons/icon.png", &width, &height, &channels, 4);
+    GLFWimage images[1];
+    images[0].width = width;
+    images[0].height = height;
+    images[0].pixels = icon;
+    glfwSetWindowIcon(window, 1, images);
 
     GLuint folderIcon = 0;
     GLuint fileIcon = 0;
@@ -180,9 +196,7 @@ bool LoadTextureFromFile(const char* filename, GLuint* out_texture)
     return true;
 }
 
-
 //Ignore
-
 //void fileExplorer(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack) {
 //    int choice = 0;
 //    std::string newPath;
