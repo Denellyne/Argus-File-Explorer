@@ -17,11 +17,13 @@ void searchNewPath(std::string Path,std::vector<Directory>& directories, std::ve
         try {
             searchPath(Path, directories, files, directoryStack);
             directoryStack.push(Path);
-            std::cout << Path << '\n';
-            Debug::print(directories, files);
+            //std::cout << Path << '\n';
+            //Debug::print(directories, files);
         }
-        catch (fs::filesystem_error) {
-            std::cout << "Invalid Path\nInsert another path\n";
+        catch (std::system_error) {
+            //std::cout << "Invalid Path\nInsert another path\n";
+            
+            //If it finds and exception it will proceed
         }
     }
 }

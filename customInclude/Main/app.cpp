@@ -16,27 +16,39 @@
 
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture);
 int GUI();
-//GLuint folderIcon,GLuint fileIcon
-void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,std::vector<GLuint> &Icons,std::string &userInputDirectory,bool &darkMode) {
+
+void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack, std::vector<GLuint>& Icons, std::string& userInputDirectory, bool& darkMode) {
 
     //Boilerplate Window Code
     using namespace ImGui;
 
-    ImVec2 iconSize = {40,40};
+    ImVec2 iconSize = { 40,40 };
     ImGuiIO& io = ImGui::GetIO();
-   
+
     PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-    SetNextWindowSize(ImVec2(io.DisplaySize.x,io.DisplaySize.y));
-    SetNextWindowPos(ImVec2(0,0));
+    SetNextWindowSize(ImVec2(io.DisplaySize.x, io.DisplaySize.y));
+    SetNextWindowPos(ImVec2(0, 0));
     ImGuiStyle& style = ImGui::GetStyle();
-    
+
+    Begin("##FileExplorer", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+
+    PopStyleVar();
+
+    //Button
+    SetCursorScreenPos({ 9,5 });
+    if (Button("<", { 20,20 }) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory);
+    SetCursorScreenPos({ 30,5 });
+    if (Button(">", { 20,20 }) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory);
+    SetCursorScreenPos({ 51,5 });
+    if (ImageButton((void*)(intptr_t)Icons[0], { 14,14 })) darkMode = !darkMode;
+
     //Theme Switcher
     if (darkMode) {
-        style.Colors[ImGuiCol_Text] = ImVec4(1,1,1,1);
-        style.Colors[ImGuiCol_WindowBg] = ImVec4(0.082, 0.086, 0.09,1);
-        style.Colors[ImGuiCol_ChildBg] = ImVec4(0.082, 0.086, 0.10, 1); 
+        style.Colors[ImGuiCol_Text] = ImVec4(1, 1, 1, 1);
+        style.Colors[ImGuiCol_WindowBg] = ImVec4(0.082, 0.086, 0.09, 1);
+        style.Colors[ImGuiCol_ChildBg] = ImVec4(0.082, 0.086, 0.10, 1);
 
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.125, 0.196, 0.302, 1));
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.095, 0.086, 0.10, 1));
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.185, 0.186, 0.302, 1));
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.185, 0.186, 0.302, 1));
     }
@@ -44,28 +56,13 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
         //Light Mode
 
         style.Colors[ImGuiCol_Text] = ImVec4(0.082, 0.086, 0.09, 1);
-        style.Colors[ImGuiCol_WindowBg] = ImVec4(0.15, 0.17, 0.30, 1.0);
-        style.Colors[ImGuiCol_ChildBg] = ImVec4(0.94, 1.00, 1.00, 1);
+        style.Colors[ImGuiCol_WindowBg] = ImVec4(0.092, 0.1, 0.259, 1);
+        style.Colors[ImGuiCol_ChildBg] = ImVec4(0.6, 0.68, 0.9, 1.0);
 
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.125, 0.196, 0.302, 1));
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.185, 0.186, 0.302, 1));
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.185, 0.186, 0.302, 1));
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.8, 0.84, 1, 1));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.8, 0.84, 1, 1));
     }
-    
-
-    Begin("##FileExplorer",NULL,ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-
-    PopStyleVar();
-    
-    //Button
-    SetCursorScreenPos({ 9,5 });
-    if (Button("<", { 20,20 }) && directoryStack.size() > 1) returnPath(directories, files, directoryStack,userInputDirectory);
-    SetCursorScreenPos({ 30,5 });
-    if (Button(">", { 20,20 }) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory);
-    SetCursorScreenPos({ 51,5 });
-    if (ImageButton((void*)(intptr_t)Icons[0], {14,14})) darkMode = !darkMode;
-    PopStyleColor(3);
-
 
 
     //Hotkeys
@@ -73,39 +70,33 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     if (IsKeyPressed(ImGuiKey_Escape) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory);
     if (IsKeyDown(ImGuiMod_Alt) && IsKeyDown(ImGuiKey_Q)) _exit(NULL); //Ctrl + Alt + Q || AltGr + Q
 
-    SetCursorPos({ io.DisplaySize.x/6,5});
+    SetCursorPos({ io.DisplaySize.x / 6,5 });
 
     if (InputText("##NULL", &userInputDirectory, ImGuiInputTextFlags_EnterReturnsTrue)) searchNewPath(userInputDirectory, directories, files, directoryStack);
 
     BeginChild("##NULL");
-    
 
     //Display icons
 
-    Columns(7,NULL,false);
-    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.f, 0.f, 0.f, 0.f));
-    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.182, 0.186, 0.20, 1));
-    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.182, 0.186, 0.20, 1));
-
-
-    for (int i = 0; i < directories.size(); i++) {
+    Columns(7, NULL, false);
+   
+    for (int i = 0; i < directories.size(); i++) {     
         ImageButton((void*)(intptr_t)Icons[1], iconSize);
         if (IsItemHovered() && IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
             userInputDirectory = directories[i].filePath;
-            searchNewPath(userInputDirectory, directories, files, directoryStack);           
+            searchNewPath(userInputDirectory, directories, files, directoryStack);
         }
         TextWrapped((directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1).c_str()));
         NextColumn();
     }
-    for (int i = 0; i < files.size(); i++){
+    for (int i = 0; i < files.size(); i++) {
         ImageButton((void*)(intptr_t)Icons[2], iconSize);
         if (IsItemHovered() && IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
-            ShellExecuteA(NULL,"open",files[i].filePath.c_str(), NULL, NULL, SW_SHOWDEFAULT);
+            ShellExecuteA(NULL, "open", files[i].filePath.c_str(), NULL, NULL, SW_SHOWDEFAULT);
         }
-        TextWrapped((files[i].filePath.substr(files[i].filePath.find_last_of("//")+1).c_str()));
+        TextWrapped((files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1).c_str()));
         NextColumn();
     }
-
 
     PopStyleColor(3);
     EndChild();
@@ -118,14 +109,12 @@ int GUI() {
     std::vector<Directory> directories(0, Directory("C:\\"));
     std::vector<File> files(0, File("Argus.exe"));
     std::stack<std::string> directoryStack;
-    std::vector<std::string> drive;
     std::vector <GLuint> Icons;
+    std::vector <std::string> drive;
     std::string userInputDirectory;
     bool darkMode = true;
     directoryStack.push("C:/");
     Icons.reserve(3);
-
-
 
     // GUI BoilerPlate
     glfwInit();
@@ -158,7 +147,6 @@ int GUI() {
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
-
     //driveIndex(drive);
 
     while (!glfwWindowShouldClose(window)) { // Render
