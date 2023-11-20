@@ -35,7 +35,7 @@ Close App:
 Create files and folders by clicking on the "New File" icon and "New Folder" icon respectively	
 
 	In case of files write name as:
-		"nameoffile"."extension"
+		"NameOfFile"."extension"
 
 ## Context tab
 
