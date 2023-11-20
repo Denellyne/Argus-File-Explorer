@@ -6,7 +6,9 @@ File Explorer written in C++
 Lightweight ,fast and easy to use
 
 
+
 ##Minimalistic UI
+
 
 ![image](https://github.com/Denellyne/FileExplorer/assets/56112881/dfd7fd23-be49-4ad9-b33e-efb7bae2f820)
 
