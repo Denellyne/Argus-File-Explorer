@@ -16,12 +16,21 @@ Lightweight ,fast and easy to use
 ## Dark and Light Theme
 
 
-//Insert image here
+![Theme](https://github.com/Denellyne/Argus-File-Explorer/assets/56112881/daf752db-19a1-48a6-ba81-9d406a72fe78)
+
+## Context tab
+
+Left clicking a icon gives you a plethora of options such as	
+
+![image](https://github.com/Denellyne/Argus-File-Explorer/assets/56112881/bc6155da-24fb-46eb-9dc2-cc5d15c149f6)
+
 
 ## HotKeys
-Go back a folder:
+Search:
 
-	Hotkey:Escape
+ 	Go back a folder: Escape
+  	Go up a folder: F1
+ 
 Close App:
 
 	Ctrl + Alt + Q
@@ -36,15 +45,7 @@ Create files and folders by clicking on the "New File" icon and "New Folder" ico
 
 	In case of files write name as:
 		"NameOfFile"."extension"
-
-## Context tab
-
-Left clicking  a icon gives you a plethora of options such as	
-
-	Open File/Folder
-	Rename File/Folder
-	Delete File/Folder
-	See Properties
+  
 
 ## Search for specific files
 
