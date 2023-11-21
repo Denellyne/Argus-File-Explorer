@@ -45,12 +45,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="imgui\header\GLFW\glfw3.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui\header\GLFW\glfw3native.h">
-      <Filter>ImGui</Filter>
-    </ClInclude>
     <ClInclude Include="imgui\header\imconfig.h">
       <Filter>ImGui</Filter>
     </ClInclude>
@@ -102,6 +96,12 @@
     <ClInclude Include="imgui\header\stb_image.h">
       <Filter>ImGui</Filter>
     </ClInclude>
+    <ClInclude Include="imgui\header\GLFW\glfw3.h">
+      <Filter>GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\header\GLFW\glfw3native.h">
+      <Filter>GLFW</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
@@ -134,6 +134,9 @@
     <Filter Include="icons">
       <UniqueIdentifier>{b70605ea-65c7-48cf-86ec-cb8e607dbcc1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GLFW">
+      <UniqueIdentifier>{43dc904c-7c44-4e12-933d-77e2d697bc9a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icons\addfile.png">
@@ -150,8 +153,8 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <None Include="glfw3.dll">
-      <Filter>ImGui</Filter>
+    <None Include="imgui\header\GLFW\glfw3.dll">
+      <Filter>GLFW</Filter>
     </None>
   </ItemGroup>
 </Project>

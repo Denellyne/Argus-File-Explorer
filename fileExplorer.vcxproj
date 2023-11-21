@@ -218,7 +218,7 @@
     <Image Include="icons\folder.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="glfw3.dll" />
+    <None Include="imgui\header\GLFW\glfw3.dll" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

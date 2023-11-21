@@ -20,18 +20,16 @@ void searchNewPath(std::string Path,std::vector<Directory>& directories, std::ve
             //std::cout << Path << '\n';
             //Debug::print(directories, files);
         }
-        catch (std::system_error) {
-            //std::cout << "Invalid Path\nInsert another path\n";
-            
-            //If it finds and exception it will proceed
-        }
+        catch (std::system_error) {}
+        catch (fs::filesystem_error){}
     }
 }
-void returnPath(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,std::string &userInputDirectory) {
+void returnPath(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,std::string &userInputDirectory,std::string &forwardPath) {
+    forwardPath = directoryStack.top();
     directoryStack.pop();
     userInputDirectory = directoryStack.top();
     searchPath(directoryStack.top(), directories, files, directoryStack);
-    Debug::print(directories, files);
+    //Debug::print(directories, files);
 }
 
 // Private

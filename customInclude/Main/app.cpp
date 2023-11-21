@@ -2,14 +2,15 @@
 #include ".\Functionality\Search\Search.h"
 #include "Functionality/Drive/drive.h"
 #include <vector>
+#include <format>
 #include <stack>
 #include <windows.h> 
-
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_stdlib.h"
 #include <GLFW/glfw3.h>
+
 #define STB_IMAGE_IMPLEMENTATION
 #define GL_CLAMP_TO_EDGE 0x812F
 #include "stb_image.h"
@@ -17,8 +18,7 @@
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture);
 int GUI();
 
-void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack, std::vector<GLuint>& Icons, std::string& userInputDirectory, bool& darkMode) {
-
+void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack, std::vector<GLuint>& Icons, std::string& userInputDirectory, bool& darkMode,std::string &forwardPath) {
     //Boilerplate Window Code
     using namespace ImGui;
 
@@ -36,9 +36,12 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
 
     //Button
     SetCursorScreenPos({ 9,5 });
-    if (Button("<", { 20,20 }) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory);
+    if (Button("<", { 20,20 }) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory,forwardPath);
     SetCursorScreenPos({ 30,5 });
-    if (Button(">", { 20,20 }) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory);
+    if (Button(">", { 20,20 }) && !forwardPath.empty()) {
+        searchNewPath(forwardPath, directories, files, directoryStack);
+        userInputDirectory = forwardPath;
+    }
     SetCursorScreenPos({ 51,5 });
     if (ImageButton((void*)(intptr_t)Icons[0], { 14,14 })) darkMode = !darkMode;
 
@@ -48,7 +51,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
         style.Colors[ImGuiCol_WindowBg] = ImVec4(0.082, 0.086, 0.09, 1);
         style.Colors[ImGuiCol_ChildBg] = ImVec4(0.082, 0.086, 0.10, 1);
 
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.095, 0.086, 0.10, 1));
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.082, 0.086, 0.10, 1));
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.185, 0.186, 0.302, 1));
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.185, 0.186, 0.302, 1));
     }
@@ -67,10 +70,14 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
 
     //Hotkeys
 
-    if (IsKeyPressed(ImGuiKey_Escape) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory);
+    if (IsKeyPressed(ImGuiKey_Escape) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory,forwardPath);
+    if (IsKeyPressed(ImGuiKey_F1) && !forwardPath.empty()) {
+        searchNewPath(forwardPath, directories, files, directoryStack);
+        userInputDirectory = forwardPath;
+    }
     if (IsKeyDown(ImGuiMod_Alt) && IsKeyDown(ImGuiKey_Q)) _exit(NULL); //Ctrl + Alt + Q || AltGr + Q
 
-    SetCursorPos({ io.DisplaySize.x / 6,5 });
+    SetCursorPos({ io.DisplaySize.x/6,5 });
 
     if (InputText("##NULL", &userInputDirectory, ImGuiInputTextFlags_EnterReturnsTrue)) searchNewPath(userInputDirectory, directories, files, directoryStack);
 
@@ -80,22 +87,117 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
 
     Columns(7, NULL, false);
    
-    for (int i = 0; i < directories.size(); i++) {     
+    for (int i = 0; i < directories.size(); i++) { //Directories
         ImageButton((void*)(intptr_t)Icons[1], iconSize);
+        PushID((2*i + 1));
         if (IsItemHovered() && IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
             userInputDirectory = directories[i].filePath;
             searchNewPath(userInputDirectory, directories, files, directoryStack);
         }
+        if (IsItemHovered(ImGuiHoveredFlags_Stationary)) {
+            BeginTooltip();
+            Text(std::format("Name: {}", (directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1))).c_str());
+            EndTooltip();
+        }
+        if (ImGui::BeginPopupContextItem("Context Menu")){
+            std::string newName = "";  
+            std::string fileName = directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1);
+            std::string dirPath = directories[i].filePath.substr(0,directories[i].filePath.size()-fileName.length());
+
+            if (Selectable("Open")) {
+                userInputDirectory = directories[i].filePath;
+                searchNewPath(userInputDirectory, directories, files, directoryStack);
+            }
+            if(Selectable("Delete")){
+                try{
+                    std::filesystem::remove_all(directories[i].filePath);
+                    directories.erase(directories.begin() + i);
+                }
+                catch (std::system_error) {}
+                catch (std::filesystem::filesystem_error) {}
+            }
+
+            if (InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
+                try {
+                    std::filesystem::rename(directories[i].filePath, std::format("{}/{}", dirPath, newName));
+                    directories[i].filePath = std::format("{}/{}", dirPath, newName);
+                }
+                catch (std::system_error){}
+                catch (std::filesystem::filesystem_error){} 
+            }
+            if (Selectable("Proprieties")) {
+
+                SHELLEXECUTEINFO info = { 0 };
+
+                info.cbSize = sizeof info;
+                info.lpFile = directories[i].filePath.c_str();
+                info.nShow = SW_SHOW;
+                info.fMask = SEE_MASK_INVOKEIDLIST;
+                info.lpVerb = "properties";
+
+                ShellExecuteEx(&info);
+            }
+            EndPopup();
+        }
         TextWrapped((directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1).c_str()));
         NextColumn();
+        PopID();
     }
-    for (int i = 0; i < files.size(); i++) {
+    for (int i = 0; i < files.size(); i++) {  //Files
         ImageButton((void*)(intptr_t)Icons[2], iconSize);
+        PushID(2*i);
         if (IsItemHovered() && IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
             ShellExecuteA(NULL, "open", files[i].filePath.c_str(), NULL, NULL, SW_SHOWDEFAULT);
         }
+        if (IsItemHovered(ImGuiHoveredFlags_Stationary)) {
+            BeginTooltip();
+            Text(std::format("Name: {}", (files[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1))).c_str());
+            Text(std::format("Size: {}Kbs", files[i].fileSizeKbs).c_str());
+            EndTooltip();
+        }
+        if (ImGui::BeginPopupContextItem("Context Menu")) {
+            std::string newName = "";
+            std::string fileName = files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1);
+            std::string dirPath = files[i].filePath.substr(0, files[i].filePath.size() - fileName.length());
+
+            if (Selectable("Open")) {
+                userInputDirectory = files[i].filePath;
+                searchNewPath(userInputDirectory, directories, files, directoryStack);
+            }
+            if (Selectable("Delete")) {
+                try {
+                    std::filesystem::remove(files[i].filePath);
+                    files.erase(files.begin() + i);
+                }
+                catch (std::system_error) {}
+                catch (std::filesystem::filesystem_error) {}
+            }
+
+            if (InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
+                try {
+                    std::filesystem::rename(files[i].filePath, std::format("{}/{}", dirPath, newName));
+                    files[i].filePath = std::format("{}/{}", dirPath, newName);
+                }
+                catch (std::system_error) {}
+                catch (std::filesystem::filesystem_error) {}
+            }
+            if (Selectable("Proprieties")) {
+
+                SHELLEXECUTEINFO info = { 0 };
+
+                info.cbSize = sizeof info;
+                info.lpFile = files[i].filePath.c_str();
+                info.nShow = SW_SHOW;
+                info.fMask = SEE_MASK_INVOKEIDLIST;
+                info.lpVerb = "properties";
+
+                ShellExecuteEx(&info);
+            }
+            EndPopup();
+        }
         TextWrapped((files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1).c_str()));
         NextColumn();
+        PopID();
     }
 
     PopStyleColor(3);
@@ -112,13 +214,14 @@ int GUI() {
     std::vector <GLuint> Icons;
     std::vector <std::string> drive;
     std::string userInputDirectory;
+    std::string forwardPath;
     bool darkMode = true;
     directoryStack.push("C:/");
     Icons.reserve(3);
 
     // GUI BoilerPlate
     glfwInit();
-
+    //glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
     GLFWwindow* window = glfwCreateWindow(1280, 720, "Argus", nullptr, nullptr);
     if (window == nullptr) return 1;
     glfwMakeContextCurrent(window);
@@ -147,6 +250,8 @@ int GUI() {
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
+
+
     //driveIndex(drive);
 
     while (!glfwWindowShouldClose(window)) { // Render
@@ -156,7 +261,7 @@ int GUI() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        app(directories, files, directoryStack,Icons,userInputDirectory,darkMode);
+        app(directories, files, directoryStack,Icons,userInputDirectory,darkMode,forwardPath);
 
         ImGui::Render();
 
