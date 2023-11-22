@@ -210,8 +210,10 @@
     <ClInclude Include="imgui\header\imstb_textedit.h" />
     <ClInclude Include="imgui\header\imstb_truetype.h" />
     <ClInclude Include="imgui\header\stb_image.h" />
+    <ClInclude Include="resource1.h" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="icon1.ico" />
     <Image Include="icons\addfile.png" />
     <Image Include="icons\addfolder.png" />
     <Image Include="icons\file.png" />
@@ -219,6 +221,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="imgui\header\GLFW\glfw3.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Argus.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

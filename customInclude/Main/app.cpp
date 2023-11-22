@@ -20,36 +20,35 @@ int GUI();
 
 void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack, std::vector<GLuint>& Icons, std::string& userInputDirectory, bool& darkMode,std::string &forwardPath) {
     //Boilerplate Window Code
-    using namespace ImGui;
-
     ImVec2 iconSize = { 40,40 };
     ImGuiIO& io = ImGui::GetIO();
 
-    PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
-    SetNextWindowSize(ImVec2(io.DisplaySize.x, io.DisplaySize.y));
-    SetNextWindowPos(ImVec2(0, 0));
+    ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
+    ImGui::SetNextWindowSize(ImVec2(io.DisplaySize.x, io.DisplaySize.y));
+    ImGui::SetNextWindowPos(ImVec2(0, 0));
     ImGuiStyle& style = ImGui::GetStyle();
 
-    Begin("##FileExplorer", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
+    ImGui::Begin("##FileExplorer", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
 
-    PopStyleVar();
+    ImGui::PopStyleVar();
 
     //Button
-    SetCursorScreenPos({ 9,5 });
-    if (Button("<", { 20,20 }) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory,forwardPath);
-    SetCursorScreenPos({ 30,5 });
-    if (Button(">", { 20,20 }) && !forwardPath.empty()) {
+    ImGui::SetCursorScreenPos({ 9,5 });
+    if (ImGui::Button("<", { 20,20 }) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory,forwardPath);
+    ImGui::SetCursorScreenPos({ 30,5 });
+    if (ImGui::Button(">", { 20,20 }) && !forwardPath.empty()) {
         searchNewPath(forwardPath, directories, files, directoryStack);
         userInputDirectory = forwardPath;
     }
-    SetCursorScreenPos({ 51,5 });
-    if (ImageButton((void*)(intptr_t)Icons[0], { 14,14 })) darkMode = !darkMode;
+    ImGui::SetCursorScreenPos({ 51,5 });
+    if (ImGui::ImageButton((void*)(intptr_t)Icons[0], { 14,14 })) darkMode = !darkMode;
 
     //Theme Switcher
     if (darkMode) {
         style.Colors[ImGuiCol_Text] = ImVec4(1, 1, 1, 1);
         style.Colors[ImGuiCol_WindowBg] = ImVec4(0.082, 0.086, 0.09, 1);
         style.Colors[ImGuiCol_ChildBg] = ImVec4(0.082, 0.086, 0.10, 1);
+        style.Colors[ImGuiCol_PopupBg] = ImVec4(0.082, 0.086, 0.10, 1);
 
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.082, 0.086, 0.10, 1));
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.185, 0.186, 0.302, 1));
@@ -61,6 +60,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
         style.Colors[ImGuiCol_Text] = ImVec4(0.082, 0.086, 0.09, 1);
         style.Colors[ImGuiCol_WindowBg] = ImVec4(0.092, 0.1, 0.259, 1);
         style.Colors[ImGuiCol_ChildBg] = ImVec4(0.6, 0.68, 0.9, 1.0);
+        style.Colors[ImGuiCol_PopupBg] = ImVec4(0.5, 0.58, 0.8, 1.0);
 
         ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
         ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.8, 0.84, 1, 1));
@@ -70,45 +70,45 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
 
     //Hotkeys
 
-    if (IsKeyPressed(ImGuiKey_Escape) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory,forwardPath);
-    if (IsKeyPressed(ImGuiKey_F1) && !forwardPath.empty()) {
+    if (ImGui::IsKeyPressed(ImGuiKey_Escape) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory,forwardPath);
+    if (ImGui::IsKeyPressed(ImGuiKey_F1) && !forwardPath.empty()) {
         searchNewPath(forwardPath, directories, files, directoryStack);
         userInputDirectory = forwardPath;
     }
-    if (IsKeyDown(ImGuiMod_Alt) && IsKeyDown(ImGuiKey_Q)) _exit(NULL); //Ctrl + Alt + Q || AltGr + Q
+    if (ImGui::IsKeyDown(ImGuiMod_Alt) && ImGui::IsKeyDown(ImGuiKey_Q)) _exit(NULL); //Ctrl + Alt + Q || AltGr + Q
 
-    SetCursorPos({ io.DisplaySize.x/6,5 });
+    ImGui::SetCursorPos({ io.DisplaySize.x/6,5 });
 
-    if (InputText("##NULL", &userInputDirectory, ImGuiInputTextFlags_EnterReturnsTrue)) searchNewPath(userInputDirectory, directories, files, directoryStack);
+    if (ImGui::InputText("##NULL", &userInputDirectory, ImGuiInputTextFlags_EnterReturnsTrue)) searchNewPath(userInputDirectory, directories, files, directoryStack);
 
-    BeginChild("##NULL");
+    ImGui::BeginChild("##NULL");
 
     //Display icons
 
-    Columns(7, NULL, false);
+    ImGui::Columns(7, NULL, false);
    
     for (int i = 0; i < directories.size(); i++) { //Directories
-        ImageButton((void*)(intptr_t)Icons[1], iconSize);
-        PushID((2*i + 1));
-        if (IsItemHovered() && IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
+        ImGui::ImageButton((void*)(intptr_t)Icons[1], iconSize);
+        ImGui::PushID((2*i + 1));
+        if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
             userInputDirectory = directories[i].filePath;
             searchNewPath(userInputDirectory, directories, files, directoryStack);
         }
-        if (IsItemHovered(ImGuiHoveredFlags_Stationary)) {
-            BeginTooltip();
-            Text(std::format("Name: {}", (directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1))).c_str());
-            EndTooltip();
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_Stationary)) {
+            ImGui::BeginTooltip();
+            ImGui::Text(std::format("Name: {}", (directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1))).c_str());
+            ImGui::EndTooltip();
         }
         if (ImGui::BeginPopupContextItem("Context Menu")){
             std::string newName = "";  
             std::string fileName = directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1);
             std::string dirPath = directories[i].filePath.substr(0,directories[i].filePath.size()-fileName.length());
 
-            if (Selectable("Open")) {
+            if (ImGui::Selectable("Open")) {
                 userInputDirectory = directories[i].filePath;
                 searchNewPath(userInputDirectory, directories, files, directoryStack);
             }
-            if(Selectable("Delete")){
+            if(ImGui::Selectable("Delete")){
                 try{
                     std::filesystem::remove_all(directories[i].filePath);
                     directories.erase(directories.begin() + i);
@@ -117,7 +117,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
                 catch (std::filesystem::filesystem_error) {}
             }
 
-            if (InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
+            if (ImGui::InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
                 try {
                     std::filesystem::rename(directories[i].filePath, std::format("{}/{}", dirPath, newName));
                     directories[i].filePath = std::format("{}/{}", dirPath, newName);
@@ -125,7 +125,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
                 catch (std::system_error){}
                 catch (std::filesystem::filesystem_error){} 
             }
-            if (Selectable("Proprieties")) {
+            if (ImGui::Selectable("Proprieties")) {
 
                 SHELLEXECUTEINFO info = { 0 };
 
@@ -137,34 +137,39 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
 
                 ShellExecuteEx(&info);
             }
-            EndPopup();
+            ImGui::EndPopup();
         }
-        TextWrapped((directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1).c_str()));
-        NextColumn();
-        PopID();
+        ImGui::TextWrapped((directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1).c_str()));
+        ImGui::NextColumn();
+        ImGui::PopID();
     }
     for (int i = 0; i < files.size(); i++) {  //Files
-        ImageButton((void*)(intptr_t)Icons[2], iconSize);
-        PushID(2*i);
-        if (IsItemHovered() && IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
-            ShellExecuteA(NULL, "open", files[i].filePath.c_str(), NULL, NULL, SW_SHOWDEFAULT);
+        ImGui::ImageButton((void*)(intptr_t)Icons[2], iconSize);
+        ImGui::PushID(2*i);
+        if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
+            try{
+                ShellExecuteA(NULL, "open", files[i].filePath.c_str(), NULL, NULL, SW_SHOWDEFAULT);
+            }
+            catch (std::system_error) {}
+            catch (std::filesystem::filesystem_error) {}
+            
         }
-        if (IsItemHovered(ImGuiHoveredFlags_Stationary)) {
-            BeginTooltip();
-            Text(std::format("Name: {}", (files[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1))).c_str());
-            Text(std::format("Size: {}Kbs", files[i].fileSizeKbs).c_str());
-            EndTooltip();
+        if (ImGui::IsItemHovered(ImGuiHoveredFlags_Stationary)) {
+            ImGui::BeginTooltip();
+            ImGui::Text(std::format("Name: {}", (files[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1))).c_str());
+            ImGui::Text(std::format("Size: {}Kbs", files[i].fileSizeKbs).c_str());
+            ImGui::EndTooltip();
         }
         if (ImGui::BeginPopupContextItem("Context Menu")) {
             std::string newName = "";
             std::string fileName = files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1);
             std::string dirPath = files[i].filePath.substr(0, files[i].filePath.size() - fileName.length());
 
-            if (Selectable("Open")) {
+            if (ImGui::Selectable("Open")) {
                 userInputDirectory = files[i].filePath;
                 searchNewPath(userInputDirectory, directories, files, directoryStack);
             }
-            if (Selectable("Delete")) {
+            if (ImGui::Selectable("Delete")) {
                 try {
                     std::filesystem::remove(files[i].filePath);
                     files.erase(files.begin() + i);
@@ -173,7 +178,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
                 catch (std::filesystem::filesystem_error) {}
             }
 
-            if (InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
+            if (ImGui::InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
                 try {
                     std::filesystem::rename(files[i].filePath, std::format("{}/{}", dirPath, newName));
                     files[i].filePath = std::format("{}/{}", dirPath, newName);
@@ -181,7 +186,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
                 catch (std::system_error) {}
                 catch (std::filesystem::filesystem_error) {}
             }
-            if (Selectable("Proprieties")) {
+            if (ImGui::Selectable("Proprieties")) {
 
                 SHELLEXECUTEINFO info = { 0 };
 
@@ -193,16 +198,16 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
 
                 ShellExecuteEx(&info);
             }
-            EndPopup();
-        }
-        TextWrapped((files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1).c_str()));
-        NextColumn();
-        PopID();
+            ImGui::EndPopup();
+        }   
+        ImGui::TextWrapped((files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1).c_str()));
+        ImGui::NextColumn();
+        ImGui::PopID();
     }
 
-    PopStyleColor(3);
-    EndChild();
-    End();
+    ImGui::PopStyleColor(3);
+    ImGui::EndChild();
+    ImGui::End();
 }
 
 int GUI() {
