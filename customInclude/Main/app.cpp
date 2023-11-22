@@ -3,6 +3,7 @@
 #include "Functionality/Drive/drive.h"
 #include <vector>
 #include <format>
+#include <tuple>
 #include <stack>
 #include <windows.h> 
 #include "imgui.h"
@@ -22,6 +23,10 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     //Boilerplate Window Code
     ImVec2 iconSize = { 40,40 };
     ImGuiIO& io = ImGui::GetIO();
+    
+    std::string userEnvName = getenv("username");
+    std::tuple<std::string, std::string> shortcuts[3] = { {"Desktop",(std::format("C:/Users/{}/Desktop",userEnvName))},{"Documents",(std::format("C:/Users/{}/Documents",userEnvName))},{"Downloads",(std::format("C:/Users/{}/Downloads",userEnvName))} };
+    int sizeShortcuts = sizeof(shortcuts) / sizeof(shortcuts[0]);
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImVec2(io.DisplaySize.x, io.DisplaySize.y));
@@ -81,7 +86,9 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
 
     if (ImGui::InputText("##NULL", &userInputDirectory, ImGuiInputTextFlags_EnterReturnsTrue)) searchNewPath(userInputDirectory, directories, files, directoryStack);
 
-    ImGui::BeginChild("##NULL");
+
+
+    ImGui::BeginChild("##NULL"); 
 
     //Display icons
 
@@ -205,10 +212,24 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
         ImGui::PopID();
     }
 
+    ImGui::SetCursorPosY(io.DisplaySize.y - 55);
+    ImGui::Columns(3, NULL, false);
+    float columnsWidth = ImGui::GetColumnWidth();
+    for (int i = 0;i < sizeShortcuts;i++) {
+        ImGui::SetCursorPosX((columnsWidth / 2) - 55 + columnsWidth * i);
+        if (ImGui::Button(std::get<0>(shortcuts[i]).c_str())) {
+            searchNewPath(std::get<1>(shortcuts[i]), directories, files, directoryStack);
+            userInputDirectory = std::get<1>(shortcuts[i]);
+        }
+        ImGui::NextColumn();
+    }
+
     ImGui::PopStyleColor(3);
-    ImGui::EndChild();
+    ImGui::EndChild();    
     ImGui::End();
 }
+
+
 
 int GUI() {
 
@@ -248,6 +269,7 @@ int GUI() {
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     ImGui::StyleColorsDark();
     
