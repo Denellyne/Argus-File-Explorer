@@ -24,6 +24,11 @@ Left clicking a icon gives you a plethora of options such as
 
 ![image](https://github.com/Denellyne/Argus-File-Explorer/assets/56112881/bc6155da-24fb-46eb-9dc2-cc5d15c149f6)
 
+## Tooltip
+
+![image](https://github.com/Denellyne/Argus-File-Explorer/assets/56112881/a5faa51c-5910-49e6-871c-5d2a809c8ee9)
+
+
 
 ## HotKeys
 Search:
