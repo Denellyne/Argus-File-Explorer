@@ -170,6 +170,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
         if (ImGui::BeginPopupContextItem("Context Menu")) {
             std::string newName = "";
             std::string fileName = files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1);
+            std::string fileExtension = files[i].filePath.substr(files[i].filePath.find_last_of("."));
             std::string dirPath = files[i].filePath.substr(0, files[i].filePath.size() - fileName.length());
 
             if (ImGui::Selectable("Open")) {
@@ -187,8 +188,8 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
 
             if (ImGui::InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
                 try {
-                    std::filesystem::rename(files[i].filePath, std::format("{}/{}", dirPath, newName));
-                    files[i].filePath = std::format("{}/{}", dirPath, newName);
+                    std::filesystem::rename(files[i].filePath, std::format("{}/{}{}", dirPath, newName,fileExtension));
+                    files[i].filePath = std::format("{}/{}{}", dirPath, newName,fileExtension);
                 }
                 catch (std::system_error) {}
                 catch (std::filesystem::filesystem_error) {}
@@ -229,8 +230,6 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     ImGui::End();
 }
 
-
-
 int GUI() {
 
     //Variables
@@ -247,7 +246,6 @@ int GUI() {
 
     // GUI BoilerPlate
     glfwInit();
-    //glfwWindowHint(GLFW_DECORATED, GLFW_FALSE);
     GLFWwindow* window = glfwCreateWindow(1280, 720, "Argus", nullptr, nullptr);
     if (window == nullptr) return 1;
     glfwMakeContextCurrent(window);
@@ -277,7 +275,6 @@ int GUI() {
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
-
 
     //driveIndex(drive);
 
