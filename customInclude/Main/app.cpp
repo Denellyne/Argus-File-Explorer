@@ -4,6 +4,7 @@
 #include <vector>
 #include <format>
 #include <tuple>
+#include <thread>
 #include <stack>
 #include <windows.h> 
 #include "imgui.h"
@@ -19,7 +20,7 @@
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture);
 int GUI();
 
-void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack, std::vector<GLuint>& Icons, std::string& userInputDirectory, bool& darkMode,std::string &forwardPath) {
+void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,std::vector <std::string> &drive, std::vector<GLuint>& Icons, std::string& userInputDirectory, bool& darkMode,std::string &forwardPath,std::string &filter) {
     //Boilerplate Window Code
     ImVec2 iconSize = { 40,40 };
     ImGuiIO& io = ImGui::GetIO();
@@ -34,7 +35,6 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     ImGuiStyle& style = ImGui::GetStyle();
 
     ImGui::Begin("##FileExplorer", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
-
     ImGui::PopStyleVar();
 
     //Button
@@ -82,19 +82,26 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     }
     if (ImGui::IsKeyDown(ImGuiMod_Alt) && ImGui::IsKeyDown(ImGuiKey_Q)) _exit(NULL); //Ctrl + Alt + Q || AltGr + Q
 
+    //Search Bars
+
     ImGui::SetCursorPos({ io.DisplaySize.x/6,5 });
+    if (ImGui::InputText("##SearchBar", &userInputDirectory, ImGuiInputTextFlags_EnterReturnsTrue)) searchNewPath(userInputDirectory, directories, files, directoryStack);
+    ImGui::SetCursorPos({ io.DisplaySize.x - 140,7 });
+    ImGui::TextColored({1,1,1,1}, "Filter:");
 
-    if (ImGui::InputText("##NULL", &userInputDirectory, ImGuiInputTextFlags_EnterReturnsTrue)) searchNewPath(userInputDirectory, directories, files, directoryStack);
-
+    ImGui::PushItemWidth(80);
+    ImGui::SetCursorPos({ io.DisplaySize.x - 90,5 });
+    if (ImGui::InputText("##Filter", &filter, ImGuiInputTextFlags_EnterReturnsTrue)) driveFilterFinder(directories,files,filter,drive); 
+    ImGui::PopItemWidth();
 
 
     ImGui::BeginChild("##NULL"); 
 
-    //Display icons
+    //Display icons && Buttons
 
     ImGui::Columns(7, NULL, false);
    
-    for (int i = 0; i < directories.size(); i++) { //Directories
+    for (long int i = 0; i < directories.size(); i++) { //Directories
         ImGui::ImageButton((void*)(intptr_t)Icons[1], iconSize);
         ImGui::PushID((2*i + 1));
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
@@ -150,7 +157,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
         ImGui::NextColumn();
         ImGui::PopID();
     }
-    for (int i = 0; i < files.size(); i++) {  //Files
+    for (long int i = 0; i < files.size(); i++) {  //Files
         ImGui::ImageButton((void*)(intptr_t)Icons[2], iconSize);
         ImGui::PushID(2*i);
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
@@ -233,16 +240,18 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
 int GUI() {
 
     //Variables
-    std::vector<Directory> directories(0, Directory("C:\\"));
+    std::vector<Directory> directories(0, Directory("C:\\"));;
     std::vector<File> files(0, File("Argus.exe"));
     std::stack<std::string> directoryStack;
-    std::vector <GLuint> Icons;
+    std::vector <GLuint> Icons(3);
     std::vector <std::string> drive;
     std::string userInputDirectory;
     std::string forwardPath;
+    std::string filter;
     bool darkMode = true;
     directoryStack.push("C:/");
-    Icons.reserve(3);
+    std::jthread indexDrive(driveIndex, std::ref(drive));
+    
 
     // GUI BoilerPlate
     glfwInit();
@@ -276,7 +285,7 @@ int GUI() {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
 
-    //driveIndex(drive);
+
 
     while (!glfwWindowShouldClose(window)) { // Render
         glfwPollEvents();
@@ -285,7 +294,7 @@ int GUI() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        app(directories, files, directoryStack,Icons,userInputDirectory,darkMode,forwardPath);
+        app(directories, files, directoryStack,drive,Icons,userInputDirectory,darkMode,forwardPath,filter);
 
         ImGui::Render();
 
@@ -332,19 +341,3 @@ bool LoadTextureFromFile(const char* filename, GLuint* out_texture)
 
     return true;
 }
-
-//Ignore
-//void fileExplorer(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack) {
-//    int choice = 0;
-//    std::string newPath;
-//    std::cin >> choice;
-//    switch (choice) {
-//    case 1:
-//        std::getline(std::cin >> std::ws, newPath);
-//        searchNewPath(newPath, directories, files, directoryStack);
-//        break;
-//    case 2:
-//        returnPath(directories, files, directoryStack);
-//        break;
-//    }
-//}
