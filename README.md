@@ -23,7 +23,8 @@ Lightweight ,fast and easy to use
 
 Use filters to search for specific Folders and Files
 
-![image](https://github.com/Denellyne/Argus-File-Explorer/assets/56112881/7af6aa48-e2d0-4df2-9252-e2d9ba963df5)
+![image](https://github.com/Denellyne/Argus-File-Explorer/assets/56112881/ed7c6e50-6fec-4dfe-b5ec-a1cad4a56baa)
+
 
 
 ## Context tab
