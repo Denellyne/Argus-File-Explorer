@@ -18,6 +18,15 @@ Lightweight ,fast and easy to use
 
 ![Theme](https://github.com/Denellyne/Argus-File-Explorer/assets/56112881/daf752db-19a1-48a6-ba81-9d406a72fe78)
 
+
+## Search for specific files
+
+Use filters to search for specific Folders and Files
+
+![image](https://github.com/Denellyne/Argus-File-Explorer/assets/56112881/ed7c6e50-6fec-4dfe-b5ec-a1cad4a56baa)
+
+
+
 ## Context tab
 
 Left clicking a icon gives you a plethora of options such as	
@@ -52,6 +61,3 @@ Create files and folders by clicking on the "New File" icon and "New Folder" ico
 		"NameOfFile"."extension"
   
 
-## Search for specific files
-
-Instead of searching for paths search directly for files using only its name
