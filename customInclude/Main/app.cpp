@@ -1,33 +1,35 @@
 #include "app.h"
-#include ".\Functionality\Search\Search.h"
 #include "Functionality/Drive/drive.h"
 #include <vector>
 #include <format>
 #include <tuple>
 #include <thread>
 #include <stack>
-#include <windows.h> 
+#include <windows.h>
+
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include "imgui_stdlib.h"
 #include <GLFW/glfw3.h>
 
-#define STB_IMAGE_IMPLEMENTATION
 #define GL_CLAMP_TO_EDGE 0x812F
+#define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
+
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture);
+void directoryBrowser(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string> &directoryStack, const std::vector<GLuint>& Icons, std::string& userInputDirectory, std::string& forwardPath);
 int GUI();
 
 void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,std::vector <std::string> &drive, std::vector<GLuint>& Icons, std::string& userInputDirectory, bool& darkMode,std::string &forwardPath,std::string &filter) {
     //Boilerplate Window Code
-    ImVec2 iconSize = { 40,40 };
+
     ImGuiIO& io = ImGui::GetIO();
     
-    std::string userEnvName = getenv("username");
-    std::tuple<std::string, std::string> shortcuts[3] = { {"Desktop",(std::format("C:/Users/{}/Desktop",userEnvName))},{"Documents",(std::format("C:/Users/{}/Documents",userEnvName))},{"Downloads",(std::format("C:/Users/{}/Downloads",userEnvName))} };
-    int sizeShortcuts = sizeof(shortcuts) / sizeof(shortcuts[0]);
+    const std::string userEnvName = getenv("username");
+    const std::tuple<std::string, std::string> shortcuts[3] = { {"Desktop",(std::format("C:/Users/{}/Desktop",userEnvName))},{"Documents",(std::format("C:/Users/{}/Documents",userEnvName))},{"Downloads",(std::format("C:/Users/{}/Downloads",userEnvName))} };
+    const int sizeShortcuts = sizeof(shortcuts) / sizeof(shortcuts[0]);
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImVec2(io.DisplaySize.x, io.DisplaySize.y));
@@ -72,16 +74,6 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
         ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.8, 0.84, 1, 1));
     }
 
-
-    //Hotkeys
-
-    if (ImGui::IsKeyPressed(ImGuiKey_Escape) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory,forwardPath);
-    if (ImGui::IsKeyPressed(ImGuiKey_F1) && !forwardPath.empty()) {
-        searchNewPath(forwardPath, directories, files, directoryStack);
-        userInputDirectory = forwardPath;
-    }
-    if (ImGui::IsKeyDown(ImGuiMod_Alt) && ImGui::IsKeyDown(ImGuiKey_Q)) _exit(NULL); //Ctrl + Alt + Q || AltGr + Q
-
     //Search Bars
 
     ImGui::SetCursorPos({ io.DisplaySize.x/6,5 });
@@ -94,132 +86,13 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     if (ImGui::InputText("##Filter", &filter, ImGuiInputTextFlags_EnterReturnsTrue)) driveFilterFinder(directories,files,filter,drive); 
     ImGui::PopItemWidth();
 
-
-    ImGui::BeginChild("##NULL"); 
+    ImGui::BeginChild("##Display Icons");
 
     //Display icons && Buttons
 
-    ImGui::Columns(7, NULL, false);
-   
-    for (long int i = 0; i < directories.size(); i++) { //Directories
-        ImGui::ImageButton((void*)(intptr_t)Icons[1], iconSize);
-        ImGui::PushID((2*i + 1));
-        if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
-            userInputDirectory = directories[i].filePath;
-            searchNewPath(userInputDirectory, directories, files, directoryStack);
-        }
-        if (ImGui::IsItemHovered(ImGuiHoveredFlags_Stationary)) {
-            ImGui::BeginTooltip();
-            ImGui::Text(std::format("Name: {}", (directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1))).c_str());
-            ImGui::EndTooltip();
-        }
-        if (ImGui::BeginPopupContextItem("Context Menu")){
-            std::string newName = "";  
-            std::string fileName = directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1);
-            std::string dirPath = directories[i].filePath.substr(0,directories[i].filePath.size()-fileName.length());
-
-            if (ImGui::Selectable("Open")) {
-                userInputDirectory = directories[i].filePath;
-                searchNewPath(userInputDirectory, directories, files, directoryStack);
-            }
-            if(ImGui::Selectable("Delete")){
-                try{
-                    std::filesystem::remove_all(directories[i].filePath);
-                    directories.erase(directories.begin() + i);
-                }
-                catch (std::system_error) {}
-                catch (std::filesystem::filesystem_error) {}
-            }
-
-            if (ImGui::InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
-                try {
-                    std::filesystem::rename(directories[i].filePath, std::format("{}/{}", dirPath, newName));
-                    directories[i].filePath = std::format("{}/{}", dirPath, newName);
-                }
-                catch (std::system_error){}
-                catch (std::filesystem::filesystem_error){} 
-            }
-            if (ImGui::Selectable("Proprieties")) {
-
-                SHELLEXECUTEINFO info = { 0 };
-
-                info.cbSize = sizeof info;
-                info.lpFile = directories[i].filePath.c_str();
-                info.nShow = SW_SHOW;
-                info.fMask = SEE_MASK_INVOKEIDLIST;
-                info.lpVerb = "properties";
-
-                ShellExecuteEx(&info);
-            }
-            ImGui::EndPopup();
-        }
-        ImGui::TextWrapped((directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1).c_str()));
-        ImGui::NextColumn();
-        ImGui::PopID();
-    }
-    for (long int i = 0; i < files.size(); i++) {  //Files
-        ImGui::ImageButton((void*)(intptr_t)Icons[2], iconSize);
-        ImGui::PushID(2*i);
-        if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
-            try{
-                ShellExecuteA(NULL, "open", files[i].filePath.c_str(), NULL, NULL, SW_SHOWDEFAULT);
-            }
-            catch (std::system_error) {}
-            catch (std::filesystem::filesystem_error) {}
-            
-        }
-        if (ImGui::IsItemHovered(ImGuiHoveredFlags_Stationary)) {
-            ImGui::BeginTooltip();
-            ImGui::Text(std::format("Name: {}", (files[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1))).c_str());
-            ImGui::Text(std::format("Size: {}Kbs", files[i].fileSizeKbs).c_str());
-            ImGui::EndTooltip();
-        }
-        if (ImGui::BeginPopupContextItem("Context Menu")) {
-            std::string newName = "";
-            std::string fileName = files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1);
-            std::string fileExtension = files[i].filePath.substr(files[i].filePath.find_last_of("."));
-            std::string dirPath = files[i].filePath.substr(0, files[i].filePath.size() - fileName.length());
-
-            if (ImGui::Selectable("Open")) {
-                userInputDirectory = files[i].filePath;
-                searchNewPath(userInputDirectory, directories, files, directoryStack);
-            }
-            if (ImGui::Selectable("Delete")) {
-                try {
-                    std::filesystem::remove(files[i].filePath);
-                    files.erase(files.begin() + i);
-                }
-                catch (std::system_error) {}
-                catch (std::filesystem::filesystem_error) {}
-            }
-
-            if (ImGui::InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
-                try {
-                    std::filesystem::rename(files[i].filePath, std::format("{}/{}{}", dirPath, newName,fileExtension));
-                    files[i].filePath = std::format("{}/{}{}", dirPath, newName,fileExtension);
-                }
-                catch (std::system_error) {}
-                catch (std::filesystem::filesystem_error) {}
-            }
-            if (ImGui::Selectable("Proprieties")) {
-
-                SHELLEXECUTEINFO info = { 0 };
-
-                info.cbSize = sizeof info;
-                info.lpFile = files[i].filePath.c_str();
-                info.nShow = SW_SHOW;
-                info.fMask = SEE_MASK_INVOKEIDLIST;
-                info.lpVerb = "properties";
-
-                ShellExecuteEx(&info);
-            }
-            ImGui::EndPopup();
-        }   
-        ImGui::TextWrapped((files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1).c_str()));
-        ImGui::NextColumn();
-        ImGui::PopID();
-    }
-
+    directoryBrowser(directories, files, directoryStack, Icons, userInputDirectory,forwardPath);
+    userInputDirectory = directoryStack.top();
+    //Shortcuts
     ImGui::SetCursorPosY(io.DisplaySize.y - 55);
     ImGui::Columns(3, NULL, false);
     float columnsWidth = ImGui::GetColumnWidth();
@@ -231,26 +104,27 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
         }
         ImGui::NextColumn();
     }
-
+    
     ImGui::PopStyleColor(3);
-    ImGui::EndChild();    
+    ImGui::EndChild();
     ImGui::End();
 }
 
 int GUI() {
 
     //Variables
-    std::vector<Directory> directories(0, Directory("C:\\"));;
-    std::vector<File> files(0, File("Argus.exe"));
+    std::vector<Directory> directories;
+    std::vector<File> files;
     std::stack<std::string> directoryStack;
     std::vector <GLuint> Icons(3);
     std::vector <std::string> drive;
     std::string userInputDirectory;
     std::string forwardPath;
     std::string filter;
+    
     bool darkMode = true;
-    directoryStack.push("C:/");
-    std::jthread indexDrive(driveIndex, std::ref(drive));
+    directoryStack.push("C://");
+    //std::jthread indexDrive(driveIndex, std::ref(drive));
     
 
     // GUI BoilerPlate
@@ -276,7 +150,6 @@ int GUI() {
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     ImGui::StyleColorsDark();
     
@@ -284,8 +157,6 @@ int GUI() {
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
-
-
 
     while (!glfwWindowShouldClose(window)) { // Render
         glfwPollEvents();
@@ -341,3 +212,141 @@ bool LoadTextureFromFile(const char* filename, GLuint* out_texture)
 
     return true;
 }
+
+void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& files,std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory,std::string &forwardPath){
+    const ImVec2 iconSize = { 40,40 };
+    //Hotkeys
+
+    if (ImGui::IsKeyPressed(ImGuiKey_Escape) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory, forwardPath);
+    if (ImGui::IsKeyPressed(ImGuiKey_F1) && !forwardPath.empty()) {
+        searchNewPath(forwardPath, directories, files, directoryStack);
+        userInputDirectory = forwardPath;
+    }
+    if (ImGui::IsKeyDown(ImGuiMod_Alt) && ImGui::IsKeyDown(ImGuiKey_Q)) _exit(NULL); //Ctrl + Alt + Q || AltGr + Q
+
+    ImGui::Columns(7, NULL, false);
+    try {
+        for (size_t i = 0; i < directories.size() && i < 4092 && directories.size() != 0; i++) { //Directories
+            ImGui::ImageButton((void*)(intptr_t)Icons[1], iconSize);
+            
+            if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {   
+                searchNewPath(directories.at(i).filePath, directories, files, directoryStack);
+            }
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_Stationary)) {
+                ImGui::BeginTooltip();
+                ImGui::Text(std::format("Name: {}", (directories.at(i).filePath.substr(directories.at(i).filePath.find_last_of("//") + 1))).c_str());
+                ImGui::EndTooltip();
+            }
+            ImGui::PushID(&directories.at(i));
+            if (ImGui::BeginPopupContextItem("##Context Menu")) {
+                std::string newName = "";
+                std::string fileName = directories.at(i).filePath.substr(directories.at(i).filePath.find_last_of("//") + 1);
+                std::string dirPath = directories.at(i).filePath.substr(0, directories.at(i).filePath.size() - fileName.length());
+
+                if (ImGui::Selectable("Open")) {
+                    searchNewPath(directories.at(i).filePath, directories, files, directoryStack);
+                }
+                if (ImGui::Selectable("Delete")) {
+                    try {
+                        std::filesystem::remove_all(directories.at(i).filePath);
+                        directories.erase(directories.begin() + i);
+                    }
+                    catch (std::filesystem::filesystem_error) {}
+                    catch (std::system_error) {}
+
+                }
+                if (ImGui::InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
+                    try {
+                        std::filesystem::rename(directories[i].filePath, std::format("{}/{}", dirPath, newName));
+                        directories.at(i).filePath = std::format("{}/{}", dirPath, newName);
+                    }
+                    catch (std::filesystem::filesystem_error) {}
+                    catch (std::system_error) {}
+
+                }
+                if (ImGui::Selectable("Proprieties")) {
+
+                    SHELLEXECUTEINFO info = { 0 };
+
+                    info.cbSize = sizeof info;
+                    info.lpFile = directories.at(i).filePath.c_str();
+                    info.nShow = SW_SHOW;
+                    info.fMask = SEE_MASK_INVOKEIDLIST;
+                    info.lpVerb = "properties";
+
+                    ShellExecuteEx(&info);
+                }
+                ImGui::EndPopup();
+            }
+            ImGui::PopID();
+            ImGui::TextWrapped((directories.at(i).filePath.substr(directories.at(i).filePath.find_last_of("//") + 1).c_str()));
+            ImGui::NextColumn();
+            
+        }
+        for (size_t i = 0; i < files.size() && i < 4092 && files.size() != 0; i++) {  //Files
+            ImGui::ImageButton((void*)(intptr_t)Icons[2], iconSize);
+
+            if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
+                try {
+                    ShellExecuteA(NULL, "open", files.at(i).filePath.c_str(), NULL, NULL, SW_SHOWDEFAULT);
+                }
+                catch (std::system_error) {}
+
+            }
+            if (ImGui::IsItemHovered(ImGuiHoveredFlags_Stationary)) {
+                ImGui::BeginTooltip();
+                ImGui::Text(std::format("Name: {}", (files.at(i).filePath.substr(files.at(i).filePath.find_last_of("//") + 1))).c_str());
+                ImGui::Text(std::format("Size: {}Kbs", files.at(i).fileSizeKbs).c_str());
+                ImGui::EndTooltip();
+            }
+            ImGui::PushID(&files.at(i));
+            if (ImGui::BeginPopupContextItem("Context Menu")) {
+                std::string newName = "";
+                std::string fileName = files.at(i).filePath.substr(files.at(i).filePath.find_last_of("//") + 1);
+                std::string fileExtension = files.at(i).filePath.substr(files.at(i).filePath.find_last_of("."));
+                std::string dirPath = files.at(i).filePath.substr(0, files.at(i).filePath.size() - fileName.length());
+
+                if (ImGui::Selectable("Open")) {
+                    userInputDirectory = files.at(i).filePath;
+                    searchNewPath(userInputDirectory, directories, files, directoryStack);
+                }
+                if (ImGui::Selectable("Delete")) {
+                    try {
+                        std::filesystem::remove(files.at(i).filePath);
+                        files.erase(files.begin() + i);
+                    }
+                    catch (std::system_error) {}
+                    catch (std::filesystem::filesystem_error) {}
+                }
+
+                if (ImGui::InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
+                    try {
+                        std::filesystem::rename(files.at(i).filePath, std::format("{}/{}{}", dirPath, newName, fileExtension));
+                        files[i].filePath = std::format("{}/{}{}", dirPath, newName, fileExtension);
+                    }
+                    catch (std::system_error) {}
+                    catch (std::filesystem::filesystem_error) {}
+                }
+                if (ImGui::Selectable("Proprieties")) {
+
+                    SHELLEXECUTEINFO info = { 0 };
+
+                    info.cbSize = sizeof info;
+                    info.lpFile = files.at(i).filePath.c_str();
+                    info.nShow = SW_SHOW;
+                    info.fMask = SEE_MASK_INVOKEIDLIST;
+                    info.lpVerb = "properties";
+
+                    ShellExecuteEx(&info);
+                }
+                ImGui::EndPopup();
+            }
+            ImGui::PopID();
+            ImGui::TextWrapped((files.at(i).filePath.substr(files.at(i).filePath.find_last_of("//") + 1).c_str()));
+            ImGui::NextColumn();
+
+        }
+    }
+    catch (const std::out_of_range& oor) {}
+}
+

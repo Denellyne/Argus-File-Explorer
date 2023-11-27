@@ -15,7 +15,7 @@ public:
     File(std::string dirEntry);
     inline void getSize();
     void newPath(std::string newPath);   
-    void copyFile(std::string newPath);
+    void const copyFile(std::string newPath);
     std::string getLastModificationTime();
 };
 

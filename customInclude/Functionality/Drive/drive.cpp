@@ -22,7 +22,7 @@ void driveIndex(std::vector<std::string>& drive) {
 void driveFilterFinder(std::vector<Directory>& directories, std::vector<File>& files,std::string filter,std::vector<std::string> drive) { //For the time being
     files.clear();
     directories.clear();
-    for (int i = 0;i < drive.size();i++) {
+    for (size_t i = 0;i < drive.size();i++) {
         std::string path = drive[i].substr(drive[i].find_last_of("//") + 1);
         if (strstr(path.c_str(), filter.c_str())) {
             fs::is_directory(drive[i]) ? directories.push_back(Directory(drive[i])) : files.push_back(File(drive[i]));
