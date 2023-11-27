@@ -18,8 +18,9 @@
 #include "stb_image.h"
 
 
+void themeSwitcher(bool& darkMode);
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture);
-void directoryBrowser(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string> &directoryStack, const std::vector<GLuint>& Icons, std::string& userInputDirectory, std::string& forwardPath);
+void directoryBrowser(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory, std::string& forwardPath);
 int GUI();
 
 void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,std::vector <std::string> &drive, std::vector<GLuint>& Icons, std::string& userInputDirectory, bool& darkMode,std::string &forwardPath,std::string &filter) {
@@ -34,7 +35,6 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImVec2(io.DisplaySize.x, io.DisplaySize.y));
     ImGui::SetNextWindowPos(ImVec2(0, 0));
-    ImGuiStyle& style = ImGui::GetStyle();
 
     ImGui::Begin("##FileExplorer", NULL, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoResize);
     ImGui::PopStyleVar();
@@ -51,28 +51,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     if (ImGui::ImageButton((void*)(intptr_t)Icons[0], { 14,14 })) darkMode = !darkMode;
 
     //Theme Switcher
-    if (darkMode) {
-        style.Colors[ImGuiCol_Text] = ImVec4(1, 1, 1, 1);
-        style.Colors[ImGuiCol_WindowBg] = ImVec4(0.082, 0.086, 0.09, 1);
-        style.Colors[ImGuiCol_ChildBg] = ImVec4(0.082, 0.086, 0.10, 1);
-        style.Colors[ImGuiCol_PopupBg] = ImVec4(0.082, 0.086, 0.10, 1);
-
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.082, 0.086, 0.10, 1));
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.185, 0.186, 0.302, 1));
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.185, 0.186, 0.302, 1));
-    }
-    else {
-        //Light Mode
-
-        style.Colors[ImGuiCol_Text] = ImVec4(0.082, 0.086, 0.09, 1);
-        style.Colors[ImGuiCol_WindowBg] = ImVec4(0.092, 0.1, 0.259, 1);
-        style.Colors[ImGuiCol_ChildBg] = ImVec4(0.6, 0.68, 0.9, 1.0);
-        style.Colors[ImGuiCol_PopupBg] = ImVec4(0.5, 0.58, 0.8, 1.0);
-
-        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.8, 0.84, 1, 1));
-        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.8, 0.84, 1, 1));
-    }
+    themeSwitcher(darkMode);
 
     //Search Bars
 
@@ -90,13 +69,13 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
 
     //Display icons && Buttons
 
-    directoryBrowser(directories, files, directoryStack, Icons, userInputDirectory,forwardPath);
+    directoryBrowser(directories, files, directoryStack, Icons, userInputDirectory, forwardPath);
     userInputDirectory = directoryStack.top();
     //Shortcuts
     ImGui::SetCursorPosY(io.DisplaySize.y - 55);
     ImGui::Columns(3, NULL, false);
     float columnsWidth = ImGui::GetColumnWidth();
-    for (int i = 0;i < sizeShortcuts;i++) {
+    for (int i = 0; i < sizeShortcuts; i++) {
         ImGui::SetCursorPosX((columnsWidth / 2) - 55 + columnsWidth * i);
         if (ImGui::Button(std::get<0>(shortcuts[i]).c_str())) {
             searchNewPath(std::get<1>(shortcuts[i]), directories, files, directoryStack);
@@ -107,6 +86,7 @@ void app(std::vector<Directory>& directories, std::vector<File>& files, std::sta
     
     ImGui::PopStyleColor(3);
     ImGui::EndChild();
+    
     ImGui::End();
 }
 
@@ -166,7 +146,6 @@ int GUI() {
         ImGui::NewFrame();
 
         app(directories, files, directoryStack,drive,Icons,userInputDirectory,darkMode,forwardPath,filter);
-
         ImGui::Render();
 
         int display_w, display_h;
@@ -226,11 +205,13 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
 
     ImGui::Columns(7, NULL, false);
     try {
-        for (size_t i = 0; i < directories.size() && i < 4092 && directories.size() != 0; i++) { //Directories
+        for (size_t i = 0; i < directories.size() && i < 4092; i++) { //Directories
             ImGui::ImageButton((void*)(intptr_t)Icons[1], iconSize);
             
             if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {   
                 searchNewPath(directories.at(i).filePath, directories, files, directoryStack);
+                ImGui::PushID(&directories.at(i));
+                ImGui::PopID();
             }
             if (ImGui::IsItemHovered(ImGuiHoveredFlags_Stationary)) {
                 ImGui::BeginTooltip();
@@ -283,7 +264,7 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
             ImGui::NextColumn();
             
         }
-        for (size_t i = 0; i < files.size() && i < 4092 && files.size() != 0; i++) {  //Files
+        for (size_t i = 0; i < files.size() && i < 4092; i++) {  //Files
             ImGui::ImageButton((void*)(intptr_t)Icons[2], iconSize);
 
             if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
@@ -307,8 +288,7 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
                 std::string dirPath = files.at(i).filePath.substr(0, files.at(i).filePath.size() - fileName.length());
 
                 if (ImGui::Selectable("Open")) {
-                    userInputDirectory = files.at(i).filePath;
-                    searchNewPath(userInputDirectory, directories, files, directoryStack);
+                    ShellExecuteA(NULL, "open", files.at(i).filePath.c_str(), NULL, NULL, SW_SHOWDEFAULT);
                 }
                 if (ImGui::Selectable("Delete")) {
                     try {
@@ -350,3 +330,30 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
     catch (const std::out_of_range& oor) {}
 }
 
+void themeSwitcher(bool &darkMode) {
+    ImGuiStyle& style = ImGui::GetStyle();
+    if (darkMode) {
+        style.Colors[ImGuiCol_Text] = ImVec4(1, 1, 1, 1);
+        style.Colors[ImGuiCol_WindowBg] = ImVec4(0.082, 0.086, 0.09, 1);
+        style.Colors[ImGuiCol_ChildBg] = ImVec4(0.082, 0.086, 0.10, 1);
+        style.Colors[ImGuiCol_PopupBg] = ImVec4(0.082, 0.086, 0.10, 1);
+
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.082, 0.086, 0.10, 1));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.185, 0.186, 0.302, 1));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.185, 0.186, 0.302, 1));
+    }
+    else {
+        //Light Mode
+
+        style.Colors[ImGuiCol_Text] = ImVec4(0.082, 0.086, 0.09, 1);
+        style.Colors[ImGuiCol_WindowBg] = ImVec4(0.092, 0.1, 0.259, 1);
+        style.Colors[ImGuiCol_ChildBg] = ImVec4(0.6, 0.68, 0.9, 1.0);
+        style.Colors[ImGuiCol_PopupBg] = ImVec4(0.5, 0.58, 0.8, 1.0);
+
+        ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+        ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.8, 0.84, 1, 1));
+        ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.8, 0.84, 1, 1));
+    }
+
+
+}
