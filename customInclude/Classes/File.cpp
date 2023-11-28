@@ -7,9 +7,13 @@ File::File(std::string dirEntry)
 {
     try {
         filePath = dirEntry;
+        fileName = dirEntry.substr(dirEntry.find_last_of("//") + 1);
         getSize();
+        fileNameLength = fileName.length();
     }
-    catch (fs::filesystem_error) { filePath = "ERROR"; fileSizeKbs = 9;}
+    catch (fs::filesystem_error) {
+        filePath = "ERROR"; fileSizeKbs = 9;fileName = "ERROR";fileNameLength = 0;
+    }
 
     //lastModificationTime = getLastModificationTime();
 }

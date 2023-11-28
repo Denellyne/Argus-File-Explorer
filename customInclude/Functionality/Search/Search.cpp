@@ -13,8 +13,7 @@ void searchPath(std::string Path, std::vector<Directory>& directories, std::vect
 
 void searchNewPath(std::string Path,std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack) {
 
-    if (directoryStack.top() != Path) {     
-        
+    if (directoryStack.top() != Path) {            
         searchPath(Path, directories, files);
         directoryStack.push(Path);
     }
@@ -34,7 +33,7 @@ void searchPath(std::string Path, std::vector<Directory>& directories, std::vect
     directories.clear();
     try {
         for (const auto& dirEntry : fs::directory_iterator(Path, fs::directory_options::skip_permission_denied))
-            dirEntry.is_directory() ? directories.push_back(Directory(dirEntry.path().generic_string())) : files.push_back(File(dirEntry.path().generic_string()));
+            fs::is_directory(dirEntry) ? directories.push_back(Directory(dirEntry.path().generic_string())) : files.push_back(File(dirEntry.path().generic_string()));
     }
     catch (fs::filesystem_error) { std::cout << "FsErro\n"; }
     catch (std::system_error) { std::cout << "SystemError\n"; }

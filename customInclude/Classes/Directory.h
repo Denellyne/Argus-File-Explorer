@@ -4,6 +4,8 @@ class Directory{
 public:
 //Variables
     std::string filePath;
+    std::string folderName;
+    int folderNameLength;
 
 //Methods
     Directory(std::string dirEntry);

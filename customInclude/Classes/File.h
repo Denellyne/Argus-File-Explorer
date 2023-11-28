@@ -8,6 +8,8 @@ class File
 public:
 //Variables      
     std::string filePath;
+    std::string fileName;
+    int fileNameLength;
     uintmax_t fileSizeKbs;
     std::string lastModificationTime;
 
