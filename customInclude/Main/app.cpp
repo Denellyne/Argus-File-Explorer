@@ -18,12 +18,12 @@
 #include "stb_image.h"
 
 
-void themeSwitcher(bool& darkMode);
+void inline themeSwitcher(const bool& const darkMode);
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture);
-void directoryBrowser(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory, std::string& forwardPath);
+void inline directoryBrowser(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory, std::string& forwardPath);
 int GUI();
 
-void app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,std::vector <std::string> &drive, std::vector<GLuint>& Icons, std::string& userInputDirectory, bool& darkMode,std::string &forwardPath,std::string &filter) {
+void inline app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,std::vector <std::string> &drive, std::vector<GLuint>& Icons, std::string& userInputDirectory, bool& darkMode,std::string &forwardPath,std::string &filter) {
     //Boilerplate Window Code
 
     ImGuiIO& io = ImGui::GetIO();
@@ -102,9 +102,9 @@ int GUI() {
     std::string forwardPath;
     std::string filter;
     
-    bool darkMode = true;
+    static bool darkMode = true;
     directoryStack.push("C://");
-    //std::jthread indexDrive(driveIndex, std::ref(drive));
+    std::jthread indexDrive(driveIndex, std::ref(drive));
     
 
     // GUI BoilerPlate
@@ -192,7 +192,7 @@ bool LoadTextureFromFile(const char* filename, GLuint* out_texture)
     return true;
 }
 
-void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& files,std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory,std::string &forwardPath){
+void inline directoryBrowser(std::vector<Directory>& directories,std::vector<File>& files,std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory,std::string &forwardPath){
     const ImVec2 iconSize = { 40,40 };
     //Hotkeys
 
@@ -205,7 +205,9 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
 
     ImGui::Columns(7, NULL, false);
     try {
-        for (size_t i = 0; i < directories.size() && i < 4092; i++) { //Directories
+        const size_t directoriesSize = directories.size();
+        const size_t filesSize = files.size();
+        for (size_t i = 0; i < directoriesSize; i++) { //Directories
             ImGui::ImageButton((void*)(intptr_t)Icons[1], iconSize);
             
             if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {   
@@ -230,7 +232,7 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
                 if (ImGui::Selectable("Delete")) {
                     try {
                         std::filesystem::remove_all(directories.at(i).filePath);
-                        directories.erase(directories.begin() + i);
+                        directories.erase(directories.cbegin() + i);
                     }
                     catch (std::filesystem::filesystem_error) {}
                     catch (std::system_error) {}
@@ -238,7 +240,7 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
                 }
                 if (ImGui::InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
                     try {
-                        std::filesystem::rename(directories[i].filePath, std::format("{}/{}", dirPath, newName));
+                        std::filesystem::rename(directories.at(i).filePath, std::format("{}/{}", dirPath, newName));
                         directories.at(i).filePath = std::format("{}/{}", dirPath, newName);
                     }
                     catch (std::filesystem::filesystem_error) {}
@@ -264,7 +266,7 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
             ImGui::NextColumn();
             
         }
-        for (size_t i = 0; i < files.size() && i < 4092; i++) {  //Files
+        for (size_t i = 0; i < filesSize; i++) {  //Files
             ImGui::ImageButton((void*)(intptr_t)Icons[2], iconSize);
 
             if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
@@ -293,7 +295,7 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
                 if (ImGui::Selectable("Delete")) {
                     try {
                         std::filesystem::remove(files.at(i).filePath);
-                        files.erase(files.begin() + i);
+                        files.erase(files.cbegin() + i);
                     }
                     catch (std::system_error) {}
                     catch (std::filesystem::filesystem_error) {}
@@ -330,7 +332,7 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
     catch (const std::out_of_range& oor) {}
 }
 
-void themeSwitcher(bool &darkMode) {
+void inline themeSwitcher(const bool& const darkMode) {
     ImGuiStyle& style = ImGui::GetStyle();
     if (darkMode) {
         style.Colors[ImGuiCol_Text] = ImVec4(1, 1, 1, 1);

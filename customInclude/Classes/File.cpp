@@ -5,9 +5,13 @@ namespace fs = std::filesystem;
 
 File::File(std::string dirEntry)
 {
-    filePath = dirEntry;
-    getSize();
-    lastModificationTime = getLastModificationTime();
+    try {
+        filePath = dirEntry;
+        getSize();
+    }
+    catch (fs::filesystem_error) { filePath = "ERROR"; fileSizeKbs = 9;}
+
+    //lastModificationTime = getLastModificationTime();
 }
 
 void File::newPath(std::string newPath) {
