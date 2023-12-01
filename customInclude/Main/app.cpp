@@ -6,8 +6,8 @@
 #include <tuple>
 #include <thread>
 #include <stack>
+#include <fstream>
 #include <windows.h>
-
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -22,7 +22,8 @@
 void inline themeSwitcher(const bool& const darkMode);
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture);
 void directoryBrowser(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory, std::string& forwardPath);
-void inline app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,const std::vector <std::string>& drive,const std::vector<GLuint>& Icons, std::string& userInputDirectory, bool& darkMode, std::string& forwardPath, std::string& filter);
+void inline static app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,const std::vector <std::string>& drive,const std::vector<GLuint>& Icons, std::string& userInputDirectory,bool& darkMode, std::string& forwardPath, std::string& filter);
+void inline createFiles(std::vector<Directory>& directories, std::vector<File>& files, const std::stack<std::string>& directoryStack);
 
 int GUI() {
 
@@ -38,6 +39,8 @@ int GUI() {
 
     static bool darkMode = true;
     directoryStack.push("C://");
+    searchNewPath("C:/", directories, files, directoryStack);
+    directoryStack.pop();
     std::jthread indexDrive(driveIndex, std::ref(drive));
 
 
@@ -81,6 +84,7 @@ int GUI() {
 
 
         app(directories, files, directoryStack, drive, Icons, userInputDirectory, darkMode, forwardPath, filter);
+
         ImGui::Render();
 
         int display_w, display_h;
@@ -98,7 +102,7 @@ int GUI() {
     return 0;
 }
 
-void inline app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,const std::vector <std::string> &drive,const std::vector<GLuint>& Icons, std::string& userInputDirectory, bool& darkMode,std::string &forwardPath,std::string &filter) {
+void inline static app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,const std::vector <std::string> &drive,const std::vector<GLuint>& Icons, std::string& userInputDirectory, bool& darkMode,std::string &forwardPath,std::string &filter) {
     //Boilerplate Window Code
 
     static ImGuiIO& io = ImGui::GetIO();
@@ -150,6 +154,7 @@ void inline app(std::vector<Directory>& directories, std::vector<File>& files, s
     //Display icons && Buttons
 
     directoryBrowser(directories, files, directoryStack, Icons, userInputDirectory, forwardPath);
+    if (std::filesystem::is_directory(userInputDirectory)) createFiles(directories, files,directoryStack);
     
     userInputDirectory = directoryStack.top();
     //Shortcuts
@@ -169,6 +174,28 @@ void inline app(std::vector<Directory>& directories, std::vector<File>& files, s
     ImGui::EndChild();
     
     ImGui::End();
+
+}
+
+void inline createFiles(std::vector<Directory>& directories, std::vector<File>& files,const std::stack<std::string>& directoryStack)
+{
+    if (ImGui::BeginPopupContextWindow("##Context", ImGuiPopupFlags_NoOpenOverItems | ImGuiPopupFlags_MouseButtonRight)) {
+        std::string newFolder, newFile;
+        if (ImGui::InputText("Create Folder", &newFolder, ImGuiInputTextFlags_EnterReturnsTrue)) {
+            while (std::filesystem::exists(std::format("{}/{}", directoryStack.top(), newFolder))) newFolder.append("1");
+            std::filesystem::create_directory(std::format("{}/{}", directoryStack.top(), newFolder));
+            directories.push_back(std::format("{}/{}", directoryStack.top(), newFolder));
+        }
+        if (ImGui::InputTextWithHint("Create File", "Must specify file extension", &newFile, ImGuiInputTextFlags_EnterReturnsTrue)) {
+            while (std::filesystem::exists(std::format("{}/{}", directoryStack.top(), newFile)) && (std::filesystem::is_regular_file(std::format("{}/{}", directoryStack.top(), newFile)))) {
+                std::string newFileExtension = newFile.substr(newFile.find_last_of("."));
+                newFile = newFile.substr(0, newFile.find_last_of(".")).append("1").append(newFileExtension);
+            }
+            std::ofstream{ std::format("{}/{}", directoryStack.top(), newFile) };
+            files.push_back(std::format("{}/{}", directoryStack.top(), newFile));
+        }
+        ImGui::EndPopup();
+    }
 }
 
 void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& files,std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory,std::string &forwardPath){
@@ -177,10 +204,14 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
     const auto filesSize = files.size();
     //Hotkeys
 
-    if (ImGui::IsKeyPressed(ImGuiKey_Escape) && directoryStack.size() > 1) returnPath(directories, files, directoryStack, userInputDirectory, forwardPath);
+    if (ImGui::IsKeyPressed(ImGuiKey_Escape) && directoryStack.size() > 1) {
+        returnPath(directories, files, directoryStack, userInputDirectory, forwardPath); 
+        return;
+    }
     if (ImGui::IsKeyPressed(ImGuiKey_F1) && !forwardPath.empty()) {
         searchNewPath(forwardPath, directories, files, directoryStack);
         userInputDirectory = forwardPath;
+        return;
     }
     if (ImGui::IsKeyDown(ImGuiMod_Alt) && ImGui::IsKeyDown(ImGuiKey_Q)) _exit(NULL); //Ctrl + Alt + Q || AltGr + Q
 
@@ -192,9 +223,8 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
         ImGui::ImageButton((void*)(intptr_t)Icons[1], iconSize);
     
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
-        a:
             searchNewPath(directories[i].filePath, directories, files, directoryStack);
-            goto exit;
+            return;
         }
         if (ImGui::IsItemHovered(ImGuiHoveredFlags_Stationary)) {
                 ImGui::BeginTooltip();
@@ -209,12 +239,15 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
                 searchNewPath(directories[i].filePath, directories, files, directoryStack);  
                 ImGui::EndPopup();
                 ImGui::PopID();
-                goto exit;
+                return;
             }
             if (ImGui::Selectable("Delete")) {
                 try {
                     std::filesystem::remove_all(directories[i].filePath);
                     directories.erase(directories.cbegin() + i);
+                    ImGui::EndPopup();
+                    ImGui::PopID();
+                    return;
                 }
                 catch (std::filesystem::filesystem_error) {}
                 catch (std::system_error) {}
@@ -222,11 +255,13 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
             }
             if (ImGui::InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
                 try {
-                    std::string dirPath = directories[i].filePath.substr(0, directories[i].filePath.size() - directories[i].folderName.length());
-                    std::filesystem::rename(directories[i].filePath, std::format("{}/{}", dirPath, newName));
-                    directories[i].filePath = std::format("{}/{}", dirPath, newName);
-                    directories[i].folderName = directories[i].filePath.substr(files[i].filePath.find_last_of("//") + 1);
-
+                    while (std::filesystem::exists(std::format("{}/{}", directoryStack.top(), newName))) newName.append("1");
+                    std::filesystem::rename(directories[i].filePath, std::format("{}/{}", directoryStack.top(), newName));
+                    directories[i].filePath = std::format("{}/{}", directoryStack.top(), newName);
+                    directories[i].folderName = directories[i].filePath.substr(directories[i].filePath.find_last_of("//") + 1);
+                    ImGui::EndPopup();
+                    ImGui::PopID();
+                    return;
                 }
                 catch (std::filesystem::filesystem_error) {}
                 catch (std::system_error) {}
@@ -252,8 +287,6 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
         else { ImGui::Text(directories[i].folderName.c_str()); }
         ImGui::NextColumn();
         ImGui::PopID();
-    nextFolder:;
-
     }
     for (auto i = 0; i < filesSize; i++) {  //Files
         ImGui::ImageButton((void*)(intptr_t)Icons[2], iconSize);           
@@ -282,6 +315,9 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
                 try {
                     std::filesystem::remove(files[i].filePath);
                     files.erase(files.cbegin() + i);
+                    ImGui::EndPopup();
+                    ImGui::PopID();
+                    return;
                 }
                 catch (std::system_error) {}
                 catch (std::filesystem::filesystem_error) {}
@@ -290,11 +326,14 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
             if (ImGui::InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
                 try {
                     std::string fileExtension = files[i].filePath.substr(files[i].filePath.find_last_of("."));
-                    std::string dirPath = files[i].filePath.substr(0, files[i].filePath.size() - files[i].fileName.length());
-
+                    std::string dirPath = directoryStack.top();
+                    while (std::filesystem::exists(std::format("{}/{}{}", dirPath, newName, fileExtension))) newName.append("1");
                     std::filesystem::rename(files[i].filePath, std::format("{}/{}{}", dirPath, newName, fileExtension));
                     files[i].filePath = std::format("{}/{}{}", dirPath, newName, fileExtension);
                     files[i].fileName = files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1);
+                    ImGui::EndPopup();
+                    ImGui::PopID();
+                    return;
                 }
                 catch (std::system_error) {}
                 catch (std::filesystem::filesystem_error) {}
@@ -317,10 +356,7 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
         if (files[i].fileNameLength > 25) ImGui::TextWrapped(files[i].fileName.c_str());
         else { ImGui::Text(files[i].fileName.c_str()); }
         ImGui::NextColumn();
-    nextFile:;
     }
-
-exit:;
 }
 
 void inline themeSwitcher(const bool& const darkMode) {
