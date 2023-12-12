@@ -9,7 +9,7 @@ public:
 //Variables      
     std::string filePath;
     std::string fileName;
-    int fileNameLength;
+    size_t fileNameLength;
     uintmax_t fileSizeKbs;
     std::string lastModificationTime;
 
@@ -17,7 +17,7 @@ public:
     File(std::string dirEntry);
     inline void getSize();
     void newPath(std::string newPath);   
-    void const copyFile(std::string newPath);
+    void copyFile(std::string newPath);
     std::string getLastModificationTime();
 };
 

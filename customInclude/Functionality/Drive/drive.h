@@ -4,4 +4,4 @@
 #include <filesystem>
 
 void driveIndex(std::vector<std::string>& drive);
-void driveFilterFinder(std::vector<Directory>& directories, std::vector<File>& files, std::string filter, const std::vector<std::string> &drive);
+void driveFilterFinder(std::vector<Directory>& directories, std::vector<File>& files,const std::string filter, const std::vector<std::string> &drive);

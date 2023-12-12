@@ -5,7 +5,7 @@ public:
 //Variables
     std::string filePath;
     std::string folderName;
-    int folderNameLength;
+    size_t folderNameLength;
 
 //Methods
     Directory(std::string dirEntry);

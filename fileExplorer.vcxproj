@@ -40,6 +40,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <SpectreMitigation>Spectre</SpectreMitigation>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='a|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -60,6 +61,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <SpectreMitigation>Spectre</SpectreMitigation>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='a|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -138,6 +140,8 @@
       <AdditionalLibraryDirectories>.\imgui\header\GLFW;.\imgui\header;.\customInclude;.\imgui\cpp</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3dll.lib;shell32.lib</AdditionalDependencies>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <StackReserveSize>500</StackReserveSize>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
@@ -226,6 +230,8 @@
       <AdditionalLibraryDirectories>.\imgui\header\GLFW;.\imgui\header;.\customInclude;.\imgui\cpp</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3dll.lib;shell32.lib</AdditionalDependencies>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <StackReserveSize>500</StackReserveSize>
+      <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <ProjectReference>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>

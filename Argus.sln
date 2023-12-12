@@ -9,18 +9,12 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "..\Installer\I
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		a|x64 = a|x64
-		a|x86 = a|x86
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{CC88DB48-E553-40C4-AD69-2AF1AA21F7E4}.a|x64.ActiveCfg = a|x64
-		{CC88DB48-E553-40C4-AD69-2AF1AA21F7E4}.a|x64.Build.0 = a|x64
-		{CC88DB48-E553-40C4-AD69-2AF1AA21F7E4}.a|x86.ActiveCfg = a|Win32
-		{CC88DB48-E553-40C4-AD69-2AF1AA21F7E4}.a|x86.Build.0 = a|Win32
 		{CC88DB48-E553-40C4-AD69-2AF1AA21F7E4}.Debug|x64.ActiveCfg = Debug|x64
 		{CC88DB48-E553-40C4-AD69-2AF1AA21F7E4}.Debug|x64.Build.0 = Debug|x64
 		{CC88DB48-E553-40C4-AD69-2AF1AA21F7E4}.Debug|x86.ActiveCfg = Debug|Win32
@@ -29,9 +23,6 @@ Global
 		{CC88DB48-E553-40C4-AD69-2AF1AA21F7E4}.Release|x64.Build.0 = Release|x64
 		{CC88DB48-E553-40C4-AD69-2AF1AA21F7E4}.Release|x86.ActiveCfg = Release|Win32
 		{CC88DB48-E553-40C4-AD69-2AF1AA21F7E4}.Release|x86.Build.0 = Release|Win32
-		{E60D3DB8-C34D-409E-9FE7-50F9B694E997}.a|x64.ActiveCfg = a
-		{E60D3DB8-C34D-409E-9FE7-50F9B694E997}.a|x86.ActiveCfg = a
-		{E60D3DB8-C34D-409E-9FE7-50F9B694E997}.a|x86.Build.0 = a
 		{E60D3DB8-C34D-409E-9FE7-50F9B694E997}.Debug|x64.ActiveCfg = Debug
 		{E60D3DB8-C34D-409E-9FE7-50F9B694E997}.Debug|x86.ActiveCfg = Debug
 		{E60D3DB8-C34D-409E-9FE7-50F9B694E997}.Release|x64.ActiveCfg = Release

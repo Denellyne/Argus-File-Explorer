@@ -3,13 +3,13 @@
 #include <string>
 #include <cstring>
 #include <filesystem>
+#include "Windows.h"
 
 
 namespace fs = std::filesystem;
 
 void driveIndex(std::vector<std::string>& drive) {
-
-    for (const auto& dirEntry : fs::recursive_directory_iterator("C:\\", fs::directory_options::skip_permission_denied)) {
+    for (const auto& dirEntry : fs::recursive_directory_iterator("C:\\", fs::directory_options::skip_permission_denied)) {       
         try {
             drive.push_back(dirEntry.path().generic_string());
         }
@@ -19,18 +19,12 @@ void driveIndex(std::vector<std::string>& drive) {
     }
 }
 
-void driveFilterFinder(std::vector<Directory>& directories, std::vector<File>& files,std::string filter,const std::vector<std::string>& drive) { //For the time being
+void driveFilterFinder(std::vector<Directory>& directories, std::vector<File>& files,const std::string filter,const std::vector<std::string>& drive) {
     files.clear();
     directories.clear();
-    for (auto i = 0;i < drive.size();i++) {
-        try {
-            std::string path = drive.at(i).substr(drive.at(i).find_last_of("//") + 1);
-            if (strstr(path.c_str(), filter.c_str())) {
-                fs::is_directory(drive.at(i)) ? directories.push_back(Directory(drive.at(i))) : files.push_back(File(drive.at(i)));
-            }
-        
-        }
-        catch (fs::filesystem_error) {};
+    for (size_t i = 0;i < drive.size();i++) {
+        std::string path = drive[i].substr(drive[i].find_last_of("//"));
+        if (strstr(path.c_str(), filter.c_str()))
+            fs::is_directory(drive[i]) ? directories.push_back(Directory(drive[i])) : files.push_back(File(drive[i]));        
     }
-
 }

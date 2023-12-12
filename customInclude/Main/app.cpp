@@ -19,9 +19,11 @@
 #include "stb_image.h"
 
 
+
+
 void inline themeSwitcher(const bool& const darkMode);
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture);
-void directoryBrowser(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory, std::string& forwardPath);
+void static directoryBrowser(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory, std::string& forwardPath);
 void inline static app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,const std::vector <std::string>& drive,const std::vector<GLuint>& Icons, std::string& userInputDirectory,bool& darkMode, std::string& forwardPath, std::string& filter);
 void inline createFiles(std::vector<Directory>& directories, std::vector<File>& files, const std::stack<std::string>& directoryStack);
 
@@ -43,7 +45,6 @@ int GUI() {
     directoryStack.pop();
     std::jthread indexDrive(driveIndex, std::ref(drive));
 
-
     // GUI BoilerPlate
     glfwInit();
     GLFWwindow* window = glfwCreateWindow(1280, 720, "Argus", nullptr, nullptr);
@@ -53,7 +54,7 @@ int GUI() {
 
     int width, height, channels;
     unsigned char* icon = stbi_load("./icons/icon.png", &width, &height, &channels, 4);
-    GLFWimage images[1];
+    GLFWimage images[1]{};
     images[0].width = width;
     images[0].height = height;
     images[0].pixels = icon;
@@ -200,7 +201,7 @@ void inline createFiles(std::vector<Directory>& directories, std::vector<File>& 
     }
 }
 
-void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& files,std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory,std::string &forwardPath){
+void static directoryBrowser(std::vector<Directory>& directories,std::vector<File>& files,std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory,std::string &forwardPath){
     const static ImVec2 iconSize = { 40,40 };
     const auto directoriesSize = directories.size();
     const auto filesSize = files.size();
@@ -220,10 +221,10 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
     ImGui::Columns(7, NULL, false);
 
 #ifdef _DEBUG
-    Debug::Timer Timer;
+    //Debug::Timer Timer;
 #endif    
-
-    for (auto i = 0;i < directoriesSize; i++) { //Directories
+    
+    for (size_t i = 0;i < directoriesSize; i++) { //Directories
         ImGui::ImageButton((void*)(intptr_t)Icons[1], iconSize);
     
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
@@ -287,12 +288,12 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
             ImGui::EndPopup();
         }
 
-        if(directories[i].folderNameLength > 25) ImGui::TextWrapped(directories[i].folderName.c_str());
+        if(directories[i].folderNameLength >= 25) ImGui::TextWrapped(directories[i].folderName.c_str());
         else { ImGui::Text(directories[i].folderName.c_str()); }
         ImGui::NextColumn();
         ImGui::PopID();
     }
-    for (auto i = 0; i < filesSize; i++) {  //Files
+    for (size_t i = 0; i < filesSize; i++) {  //Files
         ImGui::ImageButton((void*)(intptr_t)Icons[2], iconSize);           
 
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
@@ -329,7 +330,7 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
 
             if (ImGui::InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
                 try {
-                    std::string fileExtension = files[i].filePath.substr(files[i].filePath.find_last_of("."));
+                    std::string fileExtension = files[ i].filePath.substr(files[i].filePath.find_last_of("."));
                     std::string dirPath = directoryStack.top();
                     while (std::filesystem::exists(std::format("{}/{}{}", dirPath, newName, fileExtension))) newName.append("1");
                     std::filesystem::rename(files[i].filePath, std::format("{}/{}{}", dirPath, newName, fileExtension));
@@ -357,7 +358,7 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
             ImGui::EndPopup();
         }
         ImGui::PopID();
-        if (files[i].fileNameLength > 25) ImGui::TextWrapped(files[i].fileName.c_str());
+        if (files[i].fileNameLength >= 25) ImGui::TextWrapped(files[i].fileName.c_str());
         else { ImGui::Text(files[i].fileName.c_str()); }
         ImGui::NextColumn();
     }
