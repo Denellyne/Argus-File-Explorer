@@ -118,11 +118,13 @@ void inline static app(std::vector<Directory>& directories, std::vector<File>& f
 
     ImGui::PopStyleVar();
 
-    //Debug
+#ifdef _DEBUG //DEBUG
     ImGui::SetCursorPos({80,7});
     ImGui::Text(std::format("{}",files.size()+directories.size()).c_str());
+
     ImGui::SetCursorPos({ 120,7 });
     ImGui::Text(std::format("{}", io.Framerate).c_str());
+#endif
 
     //Button
     ImGui::SetCursorScreenPos({ 9,5 });
@@ -217,8 +219,10 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
 
     ImGui::Columns(7, NULL, false);
 
-    //Debug::Timer a;
-        
+#ifdef _DEBUG
+    Debug::Timer Timer;
+#endif    
+
     for (auto i = 0;i < directoriesSize; i++) { //Directories
         ImGui::ImageButton((void*)(intptr_t)Icons[1], iconSize);
     
