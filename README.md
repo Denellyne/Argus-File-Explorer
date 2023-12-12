@@ -52,7 +52,7 @@ Close App:
 
 ## Create files and folders
 
-Create files and folders by clicking on the "New File" icon and "New Folder" icon respectively	
+Right click on an empty space to open a context menu to create either files or folders
 
 ![image](https://github.com/Denellyne/Argus-File-Explorer/assets/56112881/aef9c1e4-51ef-4a4c-8268-025c973d689b)
 
