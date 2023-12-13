@@ -1,19 +1,22 @@
 #include "File.h"
 #include <format>
 #include <string>
+#include <iostream>
 namespace fs = std::filesystem;
 
 File::File(std::string dirEntry)
 {
-    try {
+   // try {
         filePath = dirEntry;
         fileName = dirEntry.substr(dirEntry.find_last_of("//") + 1);
         getSize();
         fileNameLength = fileName.length();
-    }
-    catch (fs::filesystem_error) {
-        filePath = "ERROR"; fileSizeKbs = 9;fileName = "ERROR";fileNameLength = 0;
-    }
+        fileExtension = dirEntry.substr(dirEntry.find_last_of("."));
+  //  }
+  //  catch (std::out_of_range) { filePath = "ERROR"; fileSizeKbs = 9;fileName = "ERROR";fileNameLength = 3;fileExtension = "ERROR"; }
+  //  catch (fs::filesystem_error) {
+    //    filePath = "ERROR"; fileSizeKbs = 9;fileName = "ERROR";fileNameLength = 3;fileExtension = "ERROR";
+   // }
 
     //lastModificationTime = getLastModificationTime();
 }

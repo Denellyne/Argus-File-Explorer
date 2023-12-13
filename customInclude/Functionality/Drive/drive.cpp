@@ -3,7 +3,6 @@
 #include <string>
 #include <cstring>
 #include <filesystem>
-#include "Windows.h"
 
 
 namespace fs = std::filesystem;
@@ -19,12 +18,18 @@ void driveIndex(std::vector<std::string>& drive) {
     }
 }
 
-void driveFilterFinder(std::vector<Directory>& directories, std::vector<File>& files,const std::string filter,const std::vector<std::string>& drive) {
+void driveFilterFinder(std::vector<Directory>& directories, std::vector<File>& files,const std::string filter,const std::vector<std::string> &drive) {
     files.clear();
     directories.clear();
-    for (size_t i = 0;i < drive.size();i++) {
-        std::string path = drive[i].substr(drive[i].find_last_of("//"));
-        if (strstr(path.c_str(), filter.c_str()))
-            fs::is_directory(drive[i]) ? directories.push_back(Directory(drive[i])) : files.push_back(File(drive[i]));        
+
+    for (const auto& dirEntry : drive) {
+        try {
+            std::string filePath = dirEntry.substr(dirEntry.find_last_of("//")+1);
+            if (strstr(filePath.c_str(), filter.c_str() ))
+                fs::is_directory(dirEntry) ? directories.push_back(Directory(dirEntry)) : files.push_back(File(dirEntry));
+        }
+        catch (...) { break; }
+
     }
+
 }

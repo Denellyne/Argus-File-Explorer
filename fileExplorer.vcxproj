@@ -133,6 +133,10 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
+      <RemoveUnreferencedCodeData>false</RemoveUnreferencedCodeData>
+      <ControlFlowGuard>false</ControlFlowGuard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -140,7 +144,8 @@
       <AdditionalLibraryDirectories>.\imgui\header\GLFW;.\imgui\header;.\customInclude;.\imgui\cpp</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3dll.lib;shell32.lib</AdditionalDependencies>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <StackReserveSize>500</StackReserveSize>
+      <StackReserveSize>
+      </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <ProjectReference>
@@ -223,6 +228,10 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
+      <TreatWChar_tAsBuiltInType>false</TreatWChar_tAsBuiltInType>
+      <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
+      <RemoveUnreferencedCodeData>false</RemoveUnreferencedCodeData>
+      <ControlFlowGuard>false</ControlFlowGuard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -230,7 +239,8 @@
       <AdditionalLibraryDirectories>.\imgui\header\GLFW;.\imgui\header;.\customInclude;.\imgui\cpp</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3dll.lib;shell32.lib</AdditionalDependencies>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <StackReserveSize>500</StackReserveSize>
+      <StackReserveSize>
+      </StackReserveSize>
       <LargeAddressAware>true</LargeAddressAware>
     </Link>
     <ProjectReference>

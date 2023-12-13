@@ -21,9 +21,9 @@
 
 
 
-void inline themeSwitcher(const bool& const darkMode);
+void inline themeSwitcher(const bool& darkMode);
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture);
-void static directoryBrowser(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory, std::string& forwardPath);
+void directoryBrowser(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory, std::string& forwardPath);
 void inline static app(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string>& directoryStack,const std::vector <std::string>& drive,const std::vector<GLuint>& Icons, std::string& userInputDirectory,bool& darkMode, std::string& forwardPath, std::string& filter);
 void inline createFiles(std::vector<Directory>& directories, std::vector<File>& files, const std::stack<std::string>& directoryStack);
 
@@ -158,7 +158,8 @@ void inline static app(std::vector<Directory>& directories, std::vector<File>& f
 
     directoryBrowser(directories, files, directoryStack, Icons, userInputDirectory, forwardPath);
     if (std::filesystem::is_directory(userInputDirectory)) createFiles(directories, files,directoryStack);
-    
+
+
     userInputDirectory = directoryStack.top();
     //Shortcuts
     ImGui::SetCursorPosY(io.DisplaySize.y - 55);
@@ -201,10 +202,10 @@ void inline createFiles(std::vector<Directory>& directories, std::vector<File>& 
     }
 }
 
-void static directoryBrowser(std::vector<Directory>& directories,std::vector<File>& files,std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory,std::string &forwardPath){
+void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& files,std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory,std::string &forwardPath){
     const static ImVec2 iconSize = { 40,40 };
-    const auto directoriesSize = directories.size();
-    const auto filesSize = files.size();
+    const size_t directoriesSize = directories.size();
+    const size_t filesSize = files.size();
     //Hotkeys
 
     if (ImGui::IsKeyPressed(ImGuiKey_Escape) && directoryStack.size() > 1) {
@@ -221,9 +222,9 @@ void static directoryBrowser(std::vector<Directory>& directories,std::vector<Fil
     ImGui::Columns(7, NULL, false);
 
 #ifdef _DEBUG
-    //Debug::Timer Timer;
+    Debug::Timer Timer;
 #endif    
-    
+
     for (size_t i = 0;i < directoriesSize; i++) { //Directories
         ImGui::ImageButton((void*)(intptr_t)Icons[1], iconSize);
     
@@ -249,7 +250,7 @@ void static directoryBrowser(std::vector<Directory>& directories,std::vector<Fil
             if (ImGui::Selectable("Delete")) {
                 try {
                     std::filesystem::remove_all(directories[i].filePath);
-                    directories.erase(directories.cbegin() + i);
+                    directories.erase(directories.cbegin() + static_cast<intmax_t>(i));
                     ImGui::EndPopup();
                     ImGui::PopID();
                     return;
@@ -272,7 +273,7 @@ void static directoryBrowser(std::vector<Directory>& directories,std::vector<Fil
                 catch (std::system_error) {}
 
             }
-            if (ImGui::Selectable("Proprieties")) {
+            if (ImGui::Selectable("Properties")) {
 
                 SHELLEXECUTEINFO info = { 0 };
 
@@ -290,12 +291,14 @@ void static directoryBrowser(std::vector<Directory>& directories,std::vector<Fil
 
         if(directories[i].folderNameLength >= 25) ImGui::TextWrapped(directories[i].folderName.c_str());
         else { ImGui::Text(directories[i].folderName.c_str()); }
+
         ImGui::NextColumn();
         ImGui::PopID();
     }
+
     for (size_t i = 0; i < filesSize; i++) {  //Files
         ImGui::ImageButton((void*)(intptr_t)Icons[2], iconSize);           
-
+        
         if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left)) {
             try {
                 ShellExecuteA(NULL, "open", files[i].filePath.c_str(), NULL, NULL, SW_SHOWDEFAULT);
@@ -319,31 +322,28 @@ void static directoryBrowser(std::vector<Directory>& directories,std::vector<Fil
             if (ImGui::Selectable("Delete")) {
                 try {
                     std::filesystem::remove(files[i].filePath);
-                    files.erase(files.cbegin() + i);
+                    files.erase(files.cbegin() + static_cast<intmax_t>(i));
                     ImGui::EndPopup();
                     ImGui::PopID();
                     return;
                 }
                 catch (std::system_error) {}
-                catch (std::filesystem::filesystem_error) {}
             }
 
             if (ImGui::InputText("##Rename", &newName, ImGuiInputTextFlags_EnterReturnsTrue)) {
-                try {
-                    std::string fileExtension = files[ i].filePath.substr(files[i].filePath.find_last_of("."));
+                try {    
                     std::string dirPath = directoryStack.top();
-                    while (std::filesystem::exists(std::format("{}/{}{}", dirPath, newName, fileExtension))) newName.append("1");
-                    std::filesystem::rename(files[i].filePath, std::format("{}/{}{}", dirPath, newName, fileExtension));
-                    files[i].filePath = std::format("{}/{}{}", dirPath, newName, fileExtension);
+                    while (std::filesystem::exists(std::format("{}/{}{}", dirPath, newName, files[i].fileExtension))) newName.append("1");
+                    std::filesystem::rename(files[i].filePath, std::format("{}/{}{}", dirPath, newName, files[i].fileExtension));
+                    files[i].filePath = std::format("{}/{}{}", dirPath, newName, files[i].fileExtension);
                     files[i].fileName = files[i].filePath.substr(files[i].filePath.find_last_of("//") + 1);
                     ImGui::EndPopup();
                     ImGui::PopID();
                     return;
                 }
                 catch (std::system_error) {}
-                catch (std::filesystem::filesystem_error) {}
             }
-            if (ImGui::Selectable("Proprieties")) {
+            if (ImGui::Selectable("Properties")) {
 
                 SHELLEXECUTEINFO info = { 0 };
 
@@ -357,14 +357,16 @@ void static directoryBrowser(std::vector<Directory>& directories,std::vector<Fil
             }
             ImGui::EndPopup();
         }
-        ImGui::PopID();
+      
         if (files[i].fileNameLength >= 25) ImGui::TextWrapped(files[i].fileName.c_str());
         else { ImGui::Text(files[i].fileName.c_str()); }
         ImGui::NextColumn();
+        ImGui::PopID();
     }
+
 }
 
-void inline themeSwitcher(const bool& const darkMode) {
+void inline themeSwitcher(const bool& darkMode) {
     ImGuiStyle& style = ImGui::GetStyle();
     if (darkMode) {
         style.Colors[ImGuiCol_Text] = ImVec4(1, 1, 1, 1);

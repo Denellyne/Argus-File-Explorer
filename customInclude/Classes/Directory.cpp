@@ -5,7 +5,6 @@ namespace fs = std::filesystem;
 
 Directory::Directory(std::string dirEntry)
 {
-
     filePath = dirEntry;
     folderName = dirEntry.substr(dirEntry.find_last_of("//") + 1);
     folderNameLength = folderName.length();

@@ -12,6 +12,7 @@ public:
     size_t fileNameLength;
     uintmax_t fileSizeKbs;
     std::string lastModificationTime;
+    std::string fileExtension;
 
 //Methods
     File(std::string dirEntry);
