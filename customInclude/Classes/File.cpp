@@ -4,21 +4,14 @@
 #include <iostream>
 namespace fs = std::filesystem;
 
-File::File(std::string dirEntry)
-{
-   // try {
+File::File(std::string dirEntry){
         filePath = dirEntry;
         fileName = dirEntry.substr(dirEntry.find_last_of("//") + 1);
         getSize();
         fileNameLength = fileName.length();
-        fileExtension = dirEntry.substr(dirEntry.find_last_of("."));
-  //  }
-  //  catch (std::out_of_range) { filePath = "ERROR"; fileSizeKbs = 9;fileName = "ERROR";fileNameLength = 3;fileExtension = "ERROR"; }
-  //  catch (fs::filesystem_error) {
-    //    filePath = "ERROR"; fileSizeKbs = 9;fileName = "ERROR";fileNameLength = 3;fileExtension = "ERROR";
-   // }
-
-    //lastModificationTime = getLastModificationTime();
+        if (!dirEntry.contains(".")) fileExtension = " ";
+        else fileExtension = dirEntry.substr(dirEntry.find_last_of("."));
+        lastModificationTime = getLastModificationTime();
 }
 
 void File::newPath(std::string newPath) {

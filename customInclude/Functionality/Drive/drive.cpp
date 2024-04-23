@@ -4,7 +4,6 @@
 #include <cstring>
 #include <filesystem>
 
-
 namespace fs = std::filesystem;
 
 void driveIndex(std::vector<std::string>& drive) {
@@ -24,9 +23,7 @@ void driveFilterFinder(std::vector<Directory>& directories, std::vector<File>& f
 
     for (const auto& dirEntry : drive) {
         try {
-            std::string filePath = dirEntry.substr(dirEntry.find_last_of("//")+1);
-            if (strstr(filePath.c_str(), filter.c_str() ))
-                fs::is_directory(dirEntry) ? directories.push_back(Directory(dirEntry)) : files.push_back(File(dirEntry));
+            if (dirEntry.substr(dirEntry.find_last_of("//") + 1).contains(filter)) fs::is_directory(dirEntry) ? directories.push_back(Directory(dirEntry)) : files.push_back(File(dirEntry));
         }
         catch (...) { break; }
 

@@ -19,8 +19,6 @@
 #include "stb_image.h"
 
 
-
-
 void inline themeSwitcher(const bool& darkMode);
 bool LoadTextureFromFile(const char* filename, GLuint* out_texture);
 void directoryBrowser(std::vector<Directory>& directories, std::vector<File>& files, std::stack<std::string> &directoryStack,const std::vector<GLuint>& Icons, std::string& userInputDirectory, std::string& forwardPath);
@@ -109,7 +107,7 @@ void inline static app(std::vector<Directory>& directories, std::vector<File>& f
     static ImGuiIO& io = ImGui::GetIO();
     const static std::string userEnvName = getenv("username");
     const static std::tuple<std::string, std::string> shortcuts[3] = { {"Desktop",(std::format("C:/Users/{}/Desktop",userEnvName))},{"Documents",(std::format("C:/Users/{}/Documents",userEnvName))},{"Downloads",(std::format("C:/Users/{}/Downloads",userEnvName))} };
-    const static int sizeShortcuts = sizeof(shortcuts) / sizeof(shortcuts[0]);
+    constexpr int sizeShortcuts = sizeof(shortcuts) / sizeof(shortcuts[0]);
 
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0, 0));
     ImGui::SetNextWindowSize(ImVec2(io.DisplaySize.x, io.DisplaySize.y));
@@ -242,10 +240,9 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
             std::string newName;
 
             if (ImGui::Selectable("Open")) {
-                searchNewPath(directories[i].filePath, directories, files, directoryStack);  
                 ImGui::EndPopup();
                 ImGui::PopID();
-                return;
+                return searchNewPath(directories[i].filePath, directories, files, directoryStack);;
             }
             if (ImGui::Selectable("Delete")) {
                 try {
@@ -308,8 +305,7 @@ void directoryBrowser(std::vector<Directory>& directories,std::vector<File>& fil
         }
         if (ImGui::IsItemHovered(ImGuiHoveredFlags_Stationary)) {
             ImGui::BeginTooltip();
-            ImGui::Text(std::format("Name: {}", files[i].fileName).c_str());
-            ImGui::Text(std::format("Size: {}Kbs", files[i].fileSizeKbs).c_str());
+            ImGui::Text(std::format("Name: {}\nSize: {}Kbs\nLast modification: {}", files[i].fileName, files[i].fileSizeKbs, files[i].lastModificationTime).c_str());
             ImGui::EndTooltip();
         }
         ImGui::PushID(&files[i]);
@@ -394,8 +390,7 @@ void inline themeSwitcher(const bool& darkMode) {
 
 }
 
-bool LoadTextureFromFile(const char* filename, GLuint* out_texture)
-{
+bool LoadTextureFromFile(const char* filename, GLuint* out_texture){
     // Load from file
     int image_width = 0;
     int image_height = 0;
